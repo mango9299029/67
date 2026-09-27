@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "ตรีโกณมิติ ม.3",
+      "hasCanvas": false,
+      "bodyTextLen": 496,
+      "bodyTextHash": "89ca637bd4681659cb514d6d031cf2e0c0485b311053f4e7f3f854b421e9d3b7",
+      "bodyTextPrefix": "คณิต ม.3 ตรีโกณมิติ หน้าแรก บทเรียน แบบทดสอบ คะแนน เฉลย แอดมิน ค",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "ตรีโกณมิติ ม.3",
+      "hasCanvas": false,
+      "bodyTextLen": 453,
+      "bodyTextHash": "ada101ac886e5d94f382384168f181dd94b14ddd9b62c453456ff6242cb00f6c",
+      "bodyTextPrefix": "คณิต ม.3 ตรีโกณมิติ คณิตศาสตร์ ระดับชั้นมัธยมศึกษาปีที่ 3 สื่อกา",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

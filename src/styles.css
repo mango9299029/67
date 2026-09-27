@@ -1,0 +1,174 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Sarabun", "Noto Sans Thai", "Leelawadee UI", ui-sans-serif,
+    system-ui, sans-serif;
+
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-panel: var(--panel);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-navy: var(--navy);
+  --color-navy-2: var(--navy-2);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-teal: var(--teal);
+  --color-teal-soft: var(--teal-soft);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-cream: var(--cream);
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  --shadow-card: 0 1px 2px rgba(43, 36, 22, 0.06),
+    0 4px 14px rgba(43, 36, 22, 0.06);
+
+  --ease-out-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  --bg: #faf6ef;
+  --bg-2: #f1ead9;
+  --panel: #ffffff;
+  --ink: #2b2416;
+  --ink-soft: #6b6154;
+  --line: #e3d9c3;
+  --navy: #233a5e;
+  --navy-2: #1a2c48;
+  --gold: #c08a2e;
+  --gold-soft: #f3e3c2;
+  --teal: #2e7369;
+  --teal-soft: #dceee9;
+  --good: #2e7d4f;
+  --good-soft: #dff0e4;
+  --bad: #b5473a;
+  --bad-soft: #f6e1dd;
+  --cream: #f7f2e4;
+}
+
+.dark {
+  --bg: #171310;
+  --bg-2: #1e1a15;
+  --panel: #231e18;
+  --ink: #ede6d8;
+  --ink-soft: #a99e8c;
+  --line: #3a3226;
+  --navy: #7fa0d6;
+  --navy-2: #9bb6e0;
+  --gold: #e3b865;
+  --gold-soft: #3a2f1b;
+  --teal: #7fc6b8;
+  --teal-soft: #1c2e29;
+  --good: #7bcb9b;
+  --good-soft: #1b2e22;
+  --bad: #e28a7c;
+  --bad-soft: #332019;
+  --cream: #ede6d8;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 64px;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  summary:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.formula-box {
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  font-size: 1.08rem;
+  text-align: center;
+  margin: 14px 0;
+}
+
+.formula-box .sub {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--gold-soft);
+  margin-top: 4px;
+}
+
+.eqline {
+  font-family: "Cambria Math", ui-serif, Georgia, serif;
+  font-size: 1.05rem;
+  background: var(--bg-2);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin: 6px 0;
+}
+
+.result-ring {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: conic-gradient(
+    var(--teal) calc(var(--pct, 0) * 1%),
+    var(--bg-2) 0
+  );
+  position: relative;
+}
+
+.result-ring::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  background: var(--panel);
+  border-radius: 50%;
+  z-index: 0;
+}

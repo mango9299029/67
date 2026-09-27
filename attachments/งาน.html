@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ตรีโกณมิติ ม.3 — สื่อการเรียนรู้</title>
+<style>
+:root{
+  --bg:#FAF6EF;
+  --bg-2:#F1EAD9;
+  --panel:#FFFFFF;
+  --ink:#2B2416;
+  --ink-soft:#6B6154;
+  --line:#E3D9C3;
+  --navy:#233A5E;
+  --navy-2:#1A2C48;
+  --gold:#C08A2E;
+  --gold-soft:#F3E3C2;
+  --teal:#2E7369;
+  --teal-soft:#DCEEE9;
+  --good:#2E7D4F;
+  --good-soft:#DFF0E4;
+  --bad:#B5473A;
+  --bad-soft:#F6E1DD;
+  --radius-s:6px;
+  --radius-m:12px;
+  --shadow:0 1px 2px rgba(43,36,22,0.06), 0 4px 14px rgba(43,36,22,0.06);
+  --font: 'Sarabun','Kanit','Noto Sans Thai','Leelawadee UI','TH Sarabun New',sans-serif;
+}
+:root[data-theme="dark"]{
+  --bg:#171310;
+  --bg-2:#1E1A15;
+  --panel:#231E18;
+  --ink:#EDE6D8;
+  --ink-soft:#A99E8C;
+  --line:#3A3226;
+  --navy:#7FA0D6;
+  --navy-2:#9BB6E0;
+  --gold:#E3B865;
+  --gold-soft:#3A2F1B;
+  --teal:#7FC6B8;
+  --teal-soft:#1C2E29;
+  --good:#7BCB9B;
+  --good-soft:#1B2E22;
+  --bad:#E28A7C;
+  --bad-soft:#332019;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.7;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:64px;}
+img,svg{max-width:100%;}
+.wrap{max-width:840px;margin:0 auto;padding:0 20px;}
+
+/* focus visibility */
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:2px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+
+/* ===== NAV ===== */
+header.topnav{
+  position:sticky; top:0; z-index:50;
+  background:var(--navy);
+  color:#F4EFE3;
+  padding-top:env(safe-area-inset-top,0px);
+  box-shadow:0 2px 10px rgba(0,0,0,0.15);
+}
+.navrow{
+  max-width:1040px;margin:0 auto;padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.brand{display:flex;align-items:baseline;gap:8px;font-weight:700;font-size:1.05rem;color:#fff;}
+.brand small{font-weight:400;color:var(--gold-soft);font-size:0.78rem;}
+nav.navlinks{display:flex;gap:4px;}
+nav.navlinks button{
+  background:none;border:none;color:#EDE4D0;font-family:var(--font);
+  font-size:0.95rem;padding:9px 13px;border-radius:var(--radius-s);cursor:pointer;
+  transition:background .15s ease;
+}
+nav.navlinks button:hover{background:rgba(255,255,255,0.1);}
+nav.navlinks button[aria-current="page"]{background:var(--gold);color:#2B2005;font-weight:700;}
+.navtools{display:flex;align-items:center;gap:8px;}
+#themeBtn{
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);
+  color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1.05rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.menuBtn{display:none;background:none;border:1px solid rgba(255,255,255,0.35);color:#fff;
+  padding:8px 10px;border-radius:var(--radius-s);cursor:pointer;font-size:1rem;}
+
+@media (max-width:720px){
+  nav.navlinks{display:none;position:absolute;left:0;right:0;top:100%;background:var(--navy-2);
+    flex-direction:column;padding:6px;border-top:1px solid rgba(255,255,255,0.15);}
+  nav.navlinks.open{display:flex;}
+  nav.navlinks button{text-align:right;width:100%;}
+  .menuBtn{display:block;}
+}
+
+.page{display:none;}
+.page.active{display:block;}
+
+/* ===== COVER ===== */
+.cover{
+  background:
+    radial-gradient(circle at 85% 10%, rgba(192,138,46,0.14), transparent 45%),
+    linear-gradient(180deg,var(--navy) 0%, var(--navy-2) 100%);
+  color:#F7F2E4;
+  padding:64px 20px 56px;
+  position:relative;
+  overflow:hidden;
+}
+.cover-tri{position:absolute;right:-40px;bottom:-30px;opacity:0.16;width:280px;}
+.cover .eyebrow{color:var(--gold);font-weight:600;letter-spacing:0.02em;margin:0 0 10px;font-size:0.95rem;}
+.cover h1{
+  font-size:clamp(2rem,5vw,3.1rem);
+  margin:0 0 6px;line-height:1.25;font-weight:700;
+}
+.cover h1 span{display:block;color:var(--gold);font-size:0.68em;margin-top:4px;}
+.cover p.lead{max-width:520px;color:#DCD2BB;font-size:1.08rem;margin:16px 0 28px;}
+.cover-card{
+  background:rgba(23,19,16,0.28);
+  border:1px solid rgba(247,242,228,0.18);
+  border-radius:var(--radius-m);
+  padding:22px;max-width:420px;backdrop-filter:blur(2px);
+}
+.cover-card label{display:block;font-size:0.9rem;margin-bottom:6px;color:#EAE1CB;}
+.cover-card input[type=text], .cover-card input[type=number]{
+  width:100%;padding:11px 13px;border-radius:var(--radius-s);border:1px solid rgba(247,242,228,0.3);
+  background:rgba(255,255,255,0.92);font-family:var(--font);font-size:1rem;color:#241D12;
+}
+.input-group-row{display:flex;gap:10px;margin-top:10px;}
+.input-group-row > div{flex:1;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;justify-content:center;
+  border:none;border-radius:var(--radius-s);padding:12px 22px;font-family:var(--font);
+  font-size:1rem;font-weight:600;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease;
+}
+.btn:active{transform:scale(0.98);}
+.btn-primary{background:var(--gold);color:#2B2005;}
+.btn-primary:hover{box-shadow:0 4px 14px rgba(192,138,46,0.4);}
+.btn-outline{background:transparent;border:1px solid var(--line);color:var(--ink);}
+.btn-outline:hover{background:var(--bg-2);}
+.btn-quiet{background:var(--bg-2);color:var(--ink);}
+.btn-danger{background:var(--bad-soft);color:var(--bad);}
+.btn:disabled{opacity:0.45;cursor:not-allowed;}
+.cover-card .btn{width:100%;margin-top:16px;}
+.cover-facts{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:26px;}
+.cover-facts span{
+  font-size:0.92rem;color:#EDE4D0;display:flex;align-items:center;gap:7px;
+}
+.cover-facts span::before{content:"✓";color:var(--gold);font-weight:700;}
+
+/* ===== GENERIC SECTION ===== */
+section.block{padding:44px 0;}
+section.block.alt{background:var(--bg-2);}
+h2.sectiontitle{
+  font-size:1.55rem;margin:0 0 6px;font-weight:700;color:var(--navy);
+}
+:root[data-theme="dark"] h2.sectiontitle{color:var(--navy);}
+p.sectiondesc{color:var(--ink-soft);margin:0 0 26px;max-width:640px;}
+
+/* ===== LESSON ===== */
+.topic{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);
+  padding:24px 24px 26px;margin-bottom:22px;box-shadow:var(--shadow);
+}
+.topic-head{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.topic-num{
+  flex:none;width:38px;height:38px;border-radius:50%;background:var(--gold-soft);
+  color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;
+}
+:root[data-theme="dark"] .topic-num{color:#2B2005;background:var(--gold);}
+.topic h3{margin:0;font-size:1.22rem;color:var(--ink);}
+.topic p{margin:0 0 14px;}
+.topic ul,.topic ol{margin:0 0 14px;padding-inline-start:1.3em;}
+.topic li{margin-bottom:6px;}
+
+.example{
+  background:var(--teal-soft);border-inline-start:4px solid var(--teal);
+  border-radius:var(--radius-s);padding:14px 16px;margin:14px 0;
+}
+.example .example-label{font-weight:700;color:var(--teal);font-size:0.88rem;margin-bottom:6px;}
+.formula{
+  background:var(--navy);color:#F7F2E4;border-radius:var(--radius-s);
+  padding:16px 18px;font-size:1.08rem;text-align:center;margin:14px 0;
+}
+.formula .sub{display:block;font-size:0.82rem;color:var(--gold-soft);margin-top:4px;}
+.eqline{
+  font-family:'Cambria Math',ui-serif,Georgia,serif;font-size:1.05rem;
+  background:var(--bg-2);border-radius:var(--radius-s);padding:10px 14px;margin:6px 0;
+}
+:root[data-theme="dark"] .eqline{background:#1c1712;}
+
+.mnemonic{
+  display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;
+}
+.mnemonic .chip{
+  background:var(--gold-soft);color:#5A3E0E;border-radius:999px;padding:9px 16px;font-weight:700;
+  font-size:0.98rem;
+}
+:root[data-theme="dark"] .mnemonic .chip{color:var(--gold);}
+
+table.ratio-table{width:100%;border-collapse:collapse;margin:14px 0;}
+table.ratio-table th,table.ratio-table td{
+  border:1px solid var(--line);padding:10px 12px;text-align:center;font-size:0.98rem;
+}
+table.ratio-table th{background:var(--bg-2);}
+
+.tri-wrap{display:flex;justify-content:center;margin:16px 0;}
+.tri-wrap svg{width:100%;max-width:320px;height:auto;}
+
+details.subtopic{border:1px solid var(--line);border-radius:var(--radius-s);margin-top:10px;background:var(--bg-2);}
+details.subtopic summary{padding:12px 14px;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;}
+details.subtopic summary::-webkit-details-marker{display:none;}
+details.subtopic summary::after{content:"+";font-size:1.2rem;color:var(--teal);}
+details.subtopic[open] summary::after{content:"–";}
+details.subtopic .subtopic-body{padding:0 14px 14px;}
+
+/* shortcut checklist */
+.checklist-box{
+  background:var(--panel);border:2px dashed var(--gold);border-radius:var(--radius-m);
+  padding:24px;max-width:560px;margin:0 auto;
+}
+.checklist-box h3{margin:0 0 4px;color:var(--navy);}
+.checklist-box p.hint{color:var(--ink-soft);margin:0 0 16px;font-size:0.92rem;}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);}
+.check-item:last-child{border-bottom:none;}
+.check-item input{width:19px;height:19px;margin-top:2px;accent-color:var(--teal);}
+.check-item label{cursor:pointer;}
+.check-item.checked label{color:var(--ink-soft);text-decoration:line-through;}
+
+/* ===== QUIZ ===== */
+.quiz-shell{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);box-shadow:var(--shadow);padding:26px 24px 24px;}
+.quiz-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;flex-wrap:wrap;gap:6px;}
+.quiz-top .qnum{font-weight:700;color:var(--navy);}
+.quiz-top .qpct{color:var(--ink-soft);font-size:0.9rem;}
+.timer-badge{
+  font-weight:700;padding:5px 13px;border-radius:999px;background:var(--gold-soft);color:#8A5E10;font-size:0.92rem;
+}
+:root[data-theme="dark"] .timer-badge{color:var(--gold);}
+.timer-badge.low{background:var(--bad-soft);color:var(--bad);}
+.progress-track{height:10px;background:var(--bg-2);border-radius:999px;overflow:hidden;margin-bottom:22px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:999px;transition:width .25s ease;}
+.qlevel-tag{
+  display:inline-block;font-size:0.78rem;font-weight:700;padding:3px 10px;border-radius:999px;
+  background:var(--teal-soft);color:var(--teal);margin-bottom:10px;
+}
+.qtext{font-size:1.12rem;font-weight:600;margin:6px 0 16px;color:var(--ink);}
+.choice{
+  display:flex;align-items:center;width:100%;text-align:left;background:var(--bg-2);border:1.5px solid var(--line);
+  border-radius:var(--radius-s);padding:13px 16px;margin-bottom:10px;cursor:pointer;font-family:var(--font);
+  font-size:1rem;color:var(--ink);transition:border-color .15s ease, background .15s ease;
+}
+.choice:hover{border-color:var(--teal);}
+.choice.selected{border-color:var(--teal);background:var(--teal-soft);font-weight:700;}
+.choice .letter{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;flex:none;
+  border-radius:50%;background:var(--panel);border:1.5px solid var(--line);font-size:0.85rem;font-weight:700;margin-right:10px;}
+.choice.selected .letter{background:var(--teal);border-color:var(--teal);color:#fff;}
+.written-input{
+  width:100%;padding:13px 16px;border-radius:var(--radius-s);border:1.5px solid var(--line);
+  background:var(--bg-2);font-family:var(--font);font-size:1rem;color:var(--ink);margin-bottom:10px;
+}
+.written-hint{font-size:0.88rem;color:var(--ink-soft);margin:-4px 0 14px;}
+.quiz-nav{display:flex;justify-content:space-between;margin-top:20px;gap:10px;flex-wrap:wrap;}
+.quiz-nav .spacer{flex:1;}
+.jumpgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:20px 0 4px;}
+@media (max-width:600px){.jumpgrid{grid-template-columns:repeat(6,1fr);}}
+.jumpgrid button{
+  aspect-ratio:1;border-radius:6px;border:1px solid var(--line);background:var(--bg-2);cursor:pointer;
+  font-size:0.85rem;color:var(--ink-soft);
+}
+.jumpgrid button.answered{background:var(--teal-soft);border-color:var(--teal);color:var(--teal);font-weight:700;}
+.jumpgrid button.current{outline:2px solid var(--gold);outline-offset:1px;}
+
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(20,16,10,0.55);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;}
+.modal-backdrop.show{display:flex;}
+.modal-box{background:var(--panel);border-radius:var(--radius-m);padding:26px;max-width:380px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,0.3);}
+.modal-box h3{margin:0 0 10px;color:var(--navy);}
+.modal-box p{margin:0 0 20px;color:var(--ink-soft);}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;}
+
+/* ===== RESULTS ===== */
+.result-hero{text-align:center;padding:30px 20px;}
+.result-ring{
+  width:170px;height:170px;border-radius:50%;margin:0 auto 18px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:conic-gradient(var(--teal) calc(var(--pct)*1%), var(--bg-2) 0);
+  position:relative;
+}
+.result-ring::before{content:"";position:absolute;inset:12px;background:var(--panel);border-radius:50%;}
+.result-ring .score{position:relative;font-size:2rem;font-weight:700;color:var(--navy);}
+.result-ring .outof{position:relative;font-size:0.95rem;color:var(--ink-soft);}
+.result-grade{
+  display:inline-block;padding:8px 20px;border-radius:999px;font-weight:700;margin-top:8px;font-size:1.05rem;
+}
+.grade-a{background:var(--good-soft);color:var(--good);}
+.grade-b{background:var(--teal-soft);color:var(--teal);}
+.grade-c{background:var(--gold-soft);color:#8A5E10;}
+:root[data-theme="dark"] .grade-c{color:var(--gold);}
+.grade-d{background:var(--bad-soft);color:var(--bad);}
+.result-actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+.result-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:28px;}
+.result-breakdown .rb-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-s);padding:14px;text-align:center;}
+.result-breakdown .rb-card .rb-num{font-size:1.3rem;font-weight:700;color:var(--navy);}
+.result-breakdown .rb-card .rb-label{font-size:0.82rem;color:var(--ink-soft);margin-top:2px;}
+
+/* ===== ANSWERS ===== */
+.answer-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:20px 22px;margin-bottom:16px;box-shadow:var(--shadow);}
+.answer-card .ac-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;}
+.answer-card .ac-head h4{margin:0;color:var(--navy);}
+.ac-status{font-size:0.85rem;font-weight:700;padding:4px 12px;border-radius:999px;}
+.ac-status.correct{background:var(--good-soft);color:var(--good);}
+.ac-status.wrong{background:var(--bad-soft);color:var(--bad);}
+.ac-body p{margin:6px 0;}
+.ac-body .ac-label{font-weight:700;color:var(--ink-soft);font-size:0.86rem;}
+.locked-box{text-align:center;padding:50px 20px;background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius-m);}
+.locked-box .lock-icon{font-size:2.2rem;margin-bottom:10px;}
+
+/* summary */
+.summary-box{background:var(--navy);color:#F7F2E4;border-radius:var(--radius-m);padding:28px 26px;max-width:640px;margin:0 auto;}
+.summary-box h3{margin:0 0 14px;color:var(--gold);}
+.summary-box .eqline{background:rgba(255,255,255,0.08);color:#F7F2E4;}
+.summary-box table.ratio-table th,.summary-box table.ratio-table td{border-color:rgba(255,255,255,0.2);color:#F7F2E4;}
+.summary-box table.ratio-table th{background:rgba(255,255,255,0.08);}
+
+footer.site-footer{background:var(--navy-2);color:#D9D0BC;padding:34px 20px;text-align:center;}
+footer.site-footer p{margin:4px 0;}
+
+.toast{
+  position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);
+  background:var(--navy);color:#fff;padding:12px 20px;border-radius:999px;font-size:0.92rem;
+  box-shadow:0 6px 20px rgba(0,0,0,0.25);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
+
+/* ===== ADMIN ===== */
+.admin-login-box{max-width:380px;margin:20px auto;background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--radius-m);padding:26px;box-shadow:var(--shadow);text-align:center;}
+.admin-login-box .lock-icon{font-size:2rem;margin-bottom:8px;}
+.admin-login-box input{width:100%;padding:11px 13px;border-radius:var(--radius-s);border:1px solid var(--line);
+  font-family:var(--font);font-size:1rem;margin:12px 0;background:var(--bg-2);color:var(--ink);}
+.admin-login-box .btn{width:100%;}
+.admin-error{color:var(--bad);font-size:0.88rem;margin-top:4px;min-height:1.2em;}
+.admin-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+  background:var(--navy);color:#F7F2E4;padding:12px 18px;border-radius:var(--radius-s);margin-bottom:20px;}
+.admin-bar strong{color:var(--gold);}
+.admin-panel-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);
+  padding:20px 22px;margin-bottom:20px;box-shadow:var(--shadow);}
+.admin-panel-card h3{margin:0 0 14px;color:var(--navy);font-size:1.1rem;}
+.admin-row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px;}
+.admin-field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:140px;}
+.admin-field label{font-size:0.86rem;color:var(--ink-soft);font-weight:600;}
+.admin-field input,.admin-field select,.admin-field textarea{
+  padding:9px 11px;border-radius:var(--radius-s);border:1px solid var(--line);
+  font-family:var(--font);font-size:0.96rem;background:var(--bg-2);color:var(--ink);width:100%;
+}
+.admin-field textarea{resize:vertical;min-height:64px;}
+.qbank-row{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  border:1px solid var(--line);border-radius:var(--radius-s);padding:12px 14px;margin-bottom:8px;background:var(--bg-2);}
+.qbank-row .qb-info{flex:1;min-width:0;}
+.qbank-row .qb-info .qb-q{font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.qbank-row .qb-info .qb-meta{font-size:0.82rem;color:var(--ink-soft);}
+.qbank-row .qb-actions{display:flex;gap:6px;flex:none;}
+.qbank-row .qb-actions button{padding:7px 12px;font-size:0.85rem;}
+.adminform-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+.mc-choice-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.mc-choice-row input[type=radio]{width:18px;height:18px;flex:none;accent-color:var(--teal);}
+.mc-choice-row input[type=text]{flex:1;}
+.history-row{border:1px solid var(--line);border-radius:var(--radius-s);padding:10px 12px;margin-bottom:7px;background:var(--bg-2);}
+.history-row .history-main{font-weight:700;color:var(--ink);}
+.history-row .history-meta{font-size:0.82rem;color:var(--ink-soft);margin-top:2px;}
+.history-empty{color:var(--ink-soft);font-size:0.9rem;padding:8px 0;}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="navrow">
+    <div class="brand">คณิต ม.3 <small>ตรีโกณมิติ</small></div>
+    <nav class="navlinks" id="navlinks">
+      <button data-page="cover" aria-current="page">หน้าแรก</button>
+      <button data-page="lesson">บทเรียน</button>
+      <button data-page="quiz">แบบทดสอบ</button>
+      <button data-page="results">คะแนน</button>
+      <button data-page="answers">เฉลย</button>
+      <button data-page="admin">🔑 แอดมิน</button>
+    </nav>
+    <div class="navtools">
+      <button id="themeBtn" title="สลับโหมดมืด/สว่าง" aria-label="สลับโหมดมืด/สว่าง">🌙</button>
+      <button class="menuBtn" id="menuBtn" aria-label="เมนู" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ PAGE 1: COVER ============ -->
+<section class="page active" id="page-cover">
+  <div class="cover">
+    <svg class="cover-tri" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 190,190 190,20" fill="#F3E3C2"/></svg>
+    <div class="wrap">
+      <p class="eyebrow">คณิตศาสตร์ ระดับชั้นมัธยมศึกษาปีที่ 3</p>
+      <h1>สื่อการเรียนรู้คณิตศาสตร์ ม.3<span>เรื่อง ตรีโกณมิติ</span></h1>
+      <p class="lead">เรียนจากพื้นฐาน 0 → ทำโจทย์ตรีโกณมิติได้ อธิบายทีละขั้นตอน พร้อมแบบทดสอบและเฉลยละเอียด เหมาะสำหรับผู้เริ่มต้นที่ไม่เคยเรียนเรื่องนี้มาก่อน</p>
+
+      <div class="cover-card">
+        <label for="studentName">ชื่อ-นามสกุล</label>
+        <input type="text" id="studentName" placeholder="พิมพ์ชื่อ-นามสกุลของคุณ">
+        
+        <div class="input-group-row">
+          <div>
+            <label for="studentClass">ชั้น</label>
+            <input type="text" id="studentClass" placeholder="เช่น ม.3/1">
+          </div>
+          <div>
+            <label for="studentNo">เลขที่</label>
+            <input type="number" id="studentNo" placeholder="เช่น 15">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="startBtn">เริ่มเรียนรู้ / ทำแบบทดสอบ →</button>
+      </div>
+
+      <div class="cover-facts">
+        <span>แบบทดสอบ 30 ข้อ</span>
+        <span>มีเฉลยละเอียดท้ายบท</span>
+        <span>บันทึกผลคะแนนอัตโนมัติ</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 2: LESSON ============ -->
+<section class="page" id="page-lesson">
+  <div class="wrap">
+
+    <section class="block" style="padding-bottom:8px;">
+      <h2 class="sectiontitle">บทเรียนตรีโกณมิติ</h2>
+      <p class="sectiondesc">อ่านเรียงตามลำดับหัวข้อที่ 1 ถึง 8 ทุกหัวข้อจะอธิบายตั้งแต่ความหมาย สูตร ตัวแปร ไปจนถึงตัวอย่างทีละขั้นตอน</p>
+    </section>
+
+    <div class="topic" id="topic-1">
+      <div class="topic-head"><div class="topic-num">1</div><h3>ตรีโกณมิติคืออะไร</h3></div>
+      <p>ตรีโกณมิติ (Trigonometry) คือเรื่องที่ศึกษาความสัมพันธ์ระหว่าง <strong>มุม</strong> กับ <strong>ความยาวของด้าน</strong> ในรูปสามเหลี่ยมมุมฉาก พูดง่าย ๆ คือ ถ้าเรารู้มุมและด้านบางส่วนของสามเหลี่ยมมุมฉาก เราสามารถคำนวณหาด้านหรือมุมที่เหลือได้ โดยไม่ต้องไปวัดจริง</p>
+      <div class="example">
+        <div class="example-label">ตัวอย่างสถานการณ์จริง</div>
+        <p style="margin:0;">อยากรู้ความสูงของเสาไฟฟ้าโดยไม่ต้องปีนขึ้นไปวัด เราสามารถยืนห่างจากเสาระยะหนึ่ง แล้ววัดมุมเงยที่มองไปยังยอดเสา จากนั้นใช้ตรีโกณมิติคำนวณความสูงของเสาได้ทันที เช่นเดียวกับการหาความยาวบันไดที่พาดกำแพง หรือระยะทางที่มองเห็นจากที่สูง</p>
+      </div>
+    </div>
+
+    <div class="topic" id="topic-2">
+      <div class="topic-head"><div class="topic-num">2</div><h3>ส่วนประกอบของสามเหลี่ยมมุมฉาก</h3></div>
+      <p>สามเหลี่ยมมุมฉากมีมุมหนึ่งเท่ากับ 90° เสมอ เรียกว่า <strong>มุมฉาก</strong> เมื่อเราเลือก "มุมที่สนใจ" (แทนด้วย θ อ่านว่า ทีตา) ที่ไม่ใช่มุมฉาก ด้านทั้งสามของสามเหลี่ยมจะมีชื่อเรียกตามตำแหน่งที่สัมพันธ์กับมุมนั้น:</p>
+      <div class="tri-wrap">
+        <svg viewBox="0 0 260 210" role="img" aria-label="รูปสามเหลี่ยมมุมฉากแสดงด้านตรงข้าม ด้านประชิด และด้านตรงข้ามมุมฉาก">
+          <polygon points="30,180 230,180 230,30" fill="none" stroke="#233A5E" stroke-width="4"/>
+          <rect x="210" y="160" width="20" height="20" fill="none" stroke="#233A5E" stroke-width="3"/>
+          <path d="M 75 180 A 45 45 0 0 0 60.5 150" fill="none" stroke="#C08A2E" stroke-width="3"/>
+          <text x="80" y="168" font-size="15" fill="#C08A2E" font-weight="700">θ</text>
+          <text x="120" y="200" font-size="14" fill="#2B2416">ด้านประชิด (Adjacent)</text>
+          <text x="236" y="110" font-size="14" fill="#2B2416" transform="rotate(90 236 110)">ด้านตรงข้าม (Opposite)</text>
+          <text x="90" y="95" font-size="14" fill="#2B2416" transform="rotate(-39 90 95)">ด้านตรงข้ามมุมฉาก (Hypotenuse)</text>
+        </svg>
+      </div>
+      <ul>
+        <li><strong>ด้านตรงข้ามมุมฉาก (Hypotenuse)</strong> — ด้านที่ยาวที่สุด อยู่ตรงข้ามมุมฉากพอดี และไม่เปลี่ยนชื่อไม่ว่าจะสนใจมุมไหน</li>
+        <li><strong>ด้านตรงข้าม (Opposite)</strong> — ด้านที่อยู่ตรงข้ามกับมุม θ ที่เราสนใจพอดี</li>
+        <li><strong>ด้านประชิด (Adjacent)</strong> — ด้านที่อยู่ติดกับมุม θ แต่ไม่ใช่ด้านตรงข้ามมุมฉาก</li>
+      </ul>
+      <p style="color:var(--ink-soft);font-size:0.92rem;">💡 ข้อสังเกต: ถ้าเปลี่ยนไปสนใจมุมอีกมุมหนึ่ง ด้าน "ตรงข้าม" กับ "ประชิด" จะสลับกัน แต่ด้านตรงข้ามมุมฉากยังคงเดิมเสมอ</p>
+    </div>
+
+    <div class="topic" id="topic-3">
+      <div class="topic-head"><div class="topic-num">3</div><h3>sin cos tan คืออะไร</h3></div>
+      <p>sin, cos, tan คือ <strong>อัตราส่วน</strong> ระหว่างความยาวของด้านสองด้านในสามเหลี่ยมมุมฉาก โดยเทียบกับมุม θ ที่เราสนใจ:</p>
+      <div class="formula">
+        sin θ = ด้านตรงข้าม ÷ ด้านตรงข้ามมุมฉาก
+        <span class="sub">sin θ = Opposite / Hypotenuse</span>
+      </div>
+      <div class="formula">
+        cos θ = ด้านประชิด ÷ ด้านตรงข้ามมุมฉาก
+        <span class="sub">cos θ = Adjacent / Hypotenuse</span>
+      </div>
+      <div class="formula">
+        tan θ = ด้านตรงข้าม ÷ ด้านประชิด
+        <span class="sub">tan θ = Opposite / Adjacent</span>
+      </div>
+      <table class="ratio-table">
+        <thead><tr><th>อัตราส่วน</th><th>สูตรแบบจำง่าย</th></tr></thead>
+        <tbody>
+          <tr><td>sin</td><td>ข้าม / ฉาก</td></tr>
+          <tr><td>cos</td><td>ชิด / ฉาก</td></tr>
+          <tr><td>tan</td><td>ข้าม / ชิด</td></tr>
+        </tbody>
+      </table>
+      <div class="mnemonic">
+        <span class="chip">SOH</span><span class="chip">CAH</span><span class="chip">TOA</span>
+      </div>
+      <p style="font-size:0.92rem;color:var(--ink-soft);">SOH = Sin=Opposite/Hypotenuse, CAH = Cos=Adjacent/Hypotenuse, TOA = Tan=Opposite/Adjacent — ท่องแค่ 3 คำนี้ก็จำสูตรได้ครบ</p>
+      <div class="example">
+        <div class="example-label">ตัวอย่างทีละขั้น</div>
+        <p style="margin:0 0 8px;">สามเหลี่ยมมุมฉากมีด้านตรงข้ามมุม θ ยาว 3 ซม. ด้านตรงข้ามมุมฉากยาว 5 ซม. หา sin θ</p>
+        <div class="eqline">sin θ = ด้านตรงข้าม / ด้านตรงข้ามมุมฉาก</div>
+        <div class="eqline">sin θ = 3 / 5</div>
+        <div class="eqline">sin θ = 0.6</div>
+      </div>
+    </div>
+
+    <div class="topic" id="topic-4">
+      <div class="topic-head"><div class="topic-num">4</div><h3>การเลือกใช้ sin cos tan</h3></div>
+      <p>เคล็ดลับ: ดูว่าโจทย์ "รู้" ด้านคู่ไหน แล้วเลือกสูตรที่มีด้านคู่นั้นพอดี</p>
+      <table class="ratio-table">
+        <thead><tr><th>สิ่งที่โจทย์ให้มา</th><th>สูตรที่ควรใช้</th></tr></thead>
+        <tbody>
+          <tr><td>ข้าม + ฉาก</td><td>sin</td></tr>
+          <tr><td>ชิด + ฉาก</td><td>cos</td></tr>
+          <tr><td>ข้าม + ชิด</td><td>tan</td></tr>
+        </tbody>
+      </table>
+      <div class="example">
+        <div class="example-label">ตัวอย่างที่ 1</div>
+        <p style="margin:0;">โจทย์ให้ด้านตรงข้ามมุมฉากและด้านประชิด → ใช้ <strong>cos</strong> เพราะ cos = ชิด/ฉาก</p>
+      </div>
+      <div class="example">
+        <div class="example-label">ตัวอย่างที่ 2</div>
+        <p style="margin:0;">โจทย์ให้ด้านตรงข้ามและด้านประชิด → ใช้ <strong>tan</strong> เพราะ tan = ข้าม/ชิด</p>
+      </div>
+    </div>
+
+    <div class="topic" id="topic-5">
+      <div class="topic-head"><div class="topic-num">5</div><h3>การหาความยาวด้าน</h3></div>
+      <p>เมื่อรู้มุม θ และด้านหนึ่งด้าน สามารถหาด้านที่เหลือได้ด้วยการแทนค่าในสูตร sin cos tan แล้วจัดสมการหาด้านที่ยังไม่รู้</p>
+      <div class="example">
+        <div class="example-label">ตัวอย่างทีละขั้น</div>
+        <p style="margin:0 0 8px;">มุม θ = 30° ด้านตรงข้ามมุมฉากยาว 10 ม. หาความยาวด้านตรงข้าม (opposite)</p>
+        <div class="eqline"><strong>ขั้นที่ 1:</strong> เลือกสูตร — โจทย์ให้ "ข้าม" (ที่ต้องการหา) และ "ฉาก" → ใช้ sin</div>
+        <div class="eqline"><strong>ขั้นที่ 2:</strong> sin θ = ด้านตรงข้าม / ด้านตรงข้ามมุมฉาก</div>
+        <div class="eqline"><strong>ขั้นที่ 3:</strong> sin 30° = ด้านตรงข้าม / 10</div>
+        <div class="eqline"><strong>ขั้นที่ 4:</strong> 0.5 = ด้านตรงข้าม / 10</div>
+        <div class="eqline"><strong>ขั้นที่ 5:</strong> ด้านตรงข้าม = 0.5 × 10 = <strong>5 เมตร</strong></div>
+      </div>
+    </div>
+
+    <div class="topic" id="topic-6">
+      <div class="topic-head"><div class="topic-num">6</div><h3>การหามุม (Inverse Trigonometric Function)</h3></div>
+      <p>ถ้ารู้ด้านสองด้าน แต่ไม่รู้ขนาดของมุม θ เราจะใช้ <strong>ฟังก์ชันผกผัน</strong> ของ sin cos tan ซึ่งเขียนแทนด้วย sin⁻¹, cos⁻¹, tan⁻¹ (อ่านว่า อาร์กไซน์ อาร์กคอส อาร์กแทน) เพื่อ "ย้อนกลับ" จากอัตราส่วนไปเป็นมุม</p>
+      <div class="example">
+        <div class="example-label">ตัวอย่างทีละขั้น</div>
+        <p style="margin:0 0 8px;">โจทย์: tan θ = 3/4 หา θ</p>
+        <div class="eqline">tan θ = 3/4</div>
+        <div class="eqline">θ = tan⁻¹(3/4)</div>
+        <div class="eqline">θ ≈ 36.87°</div>
+      </div>
+    </div>
+
+    <div class="topic" id="topic-7">
+      <div class="topic-head"><div class="topic-num">7</div><h3>ทฤษฎีบทพีทาโกรัสที่เกี่ยวข้อง</h3></div>
+      <p>ทฤษฎีบทพีทาโกรัสใช้หาด้านของสามเหลี่ยมมุมฉากได้โดยไม่ต้องใช้มุมเลย หากรู้ด้านสองด้าน:</p>
+      <div class="formula">a² + b² = c²<span class="sub">a, b = ด้านประกอบมุมฉาก, c = ด้านตรงข้ามมุมฉาก</span></div>
+      <div class="example">
+        <div class="example-label">ตัวอย่างทีละขั้น</div>
+        <p style="margin:0 0 8px;">ด้านประกอบมุมฉากยาว 6 ซม. และ 8 ซม. หาด้านตรงข้ามมุมฉาก</p>
+        <div class="eqline">c² = a² + b²</div>
+        <div class="eqline">c² = 6² + 8² = 36 + 64 = 100</div>
+        <div class="eqline">c = √100 = <strong>10 ซม.</strong></div>
+      </div>
+    </div>
+
+    <div class="topic" id="topic-8">
+      <div class="topic-head"><div class="topic-num">8</div><h3>โจทย์ประยุกต์</h3></div>
+      <p>โจทย์ประยุกต์มักอยู่ในรูปสถานการณ์จริง เช่น เสา ต้นไม้ บันได อาคาร เงา มุมเงย มุมก้ม ขั้นตอนสำคัญที่สุดคือ <strong>วาดรูปสามเหลี่ยมจากโจทย์ก่อนคำนวณเสมอ</strong></p>
+      <details class="subtopic">
+        <summary>มุมเงย (Angle of Elevation) คืออะไร</summary>
+        <div class="subtopic-body"><p>มุมที่เงยหน้ามองจากแนวระดับสายตาขึ้นไปยังวัตถุที่อยู่สูงกว่า เช่น มองจากพื้นขึ้นไปยอดตึก</p></div>
+      </details>
+      <details class="subtopic">
+        <summary>มุมก้ม (Angle of Depression) คืออะไร</summary>
+        <div class="subtopic-body"><p>มุมที่ก้มหน้ามองจากแนวระดับสายตาลงไปยังวัตถุที่อยู่ต่ำกว่า เช่น มองจากดาดฟ้าตึกลงมายังพื้น</p></div>
+      </details>
+    </div>
+
+    <section class="block" style="padding-top:10px;">
+      <div class="checklist-box" id="checklistBox">
+        <h3>สูตรลัดก่อนทำข้อสอบ</h3>
+        <p class="hint">ติ๊กเมื่อทำตามขั้นตอนแต่ละข้อระหว่างทำโจทย์จริง</p>
+        <div id="checklistItems"></div>
+      </div>
+    </section>
+
+    <section class="block" style="text-align:center;">
+      <button class="btn btn-primary" data-page="quiz">ไปทำแบบทดสอบ 30 ข้อ →</button>
+    </section>
+  </div>
+</section>
+
+<!-- ============ PAGE 3: QUIZ ============ -->
+<section class="page" id="page-quiz">
+  <div class="wrap" style="padding:36px 20px 60px;">
+    <h2 class="sectiontitle">แบบทดสอบ</h2>
+    <p class="sectiondesc">ทำให้ครบทุกข้อก่อนกดส่งคำตอบ ระบบจะไม่แสดงถูก/ผิดจนกว่าจะส่งคำตอบทั้งหมด</p>
+
+    <div class="quiz-shell">
+      <div class="quiz-top">
+        <span class="qnum" id="qnumLabel">ข้อ 1 / 30</span>
+        <span class="timer-badge" id="timerBadge" style="display:none;">⏱ --:--</span>
+        <span class="qpct" id="qpctLabel">ทำไปแล้ว 0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+      <div id="qlevelTag" class="qlevel-tag"></div>
+      <div class="qtext" id="qtext"></div>
+      <div id="qdiagram"></div>
+      <div id="choicesWrap"></div>
+
+      <div class="quiz-nav">
+        <button class="btn btn-outline" id="prevBtn">← ย้อนกลับ</button>
+        <span class="spacer"></span>
+        <button class="btn btn-quiet" id="nextBtn">ถัดไป →</button>
+        <button class="btn btn-primary" id="submitBtn" style="display:none;">ส่งคำตอบ</button>
+      </div>
+
+      <div class="jumpgrid" id="jumpgrid" aria-label="กระโดดไปยังข้อ"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 4: RESULTS ============ -->
+<section class="page" id="page-results">
+  <div class="wrap" style="padding:36px 20px 60px;">
+    <h2 class="sectiontitle">ผลคะแนน</h2>
+    <div id="resultsEmpty">
+      <p class="sectiondesc">คุณยังไม่ได้ส่งคำตอบแบบทดสอบ กรุณาทำแบบทดสอบและกด "ส่งคำตอบ" ก่อน</p>
+      <button class="btn btn-primary" data-page="quiz">ไปทำแบบทดสอบ</button>
+    </div>
+    <div id="resultsContent" style="display:none;">
+      <div class="result-hero">
+        <p style="color:var(--ink-soft);margin:0 0 6px;" id="resultName"></p>
+        <div class="result-ring" id="resultRing"><span class="score" id="resultScore">0</span><span class="outof" id="resultOutOf">/ 30</span></div>
+        <div class="result-grade" id="resultGrade"></div>
+      </div>
+      <div class="result-breakdown" id="resultBreakdown"></div>
+      <div class="result-actions">
+        <button class="btn btn-primary" id="viewAnswersBtn">ดูเฉลยละเอียดท้ายบท</button>
+        <button class="btn btn-outline" id="restartBtn">เริ่มใหม่</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 5: ANSWERS ============ -->
+<section class="page" id="page-answers">
+  <div class="wrap" style="padding:36px 20px 60px;">
+    <h2 class="sectiontitle">เฉลยแบบละเอียด</h2>
+    <p class="sectiondesc">เฉลยทั้ง 30 ข้อ พร้อมวิธีทำทีละขั้นตอนและเหตุผลประกอบ</p>
+    <div id="answersLocked" class="locked-box">
+      <div class="lock-icon">🔒</div>
+      <p style="margin:0 0 14px;">กรุณาส่งคำตอบแบบทดสอบให้ครบก่อน จึงจะดูเฉลยได้</p>
+      <button class="btn btn-primary" data-page="quiz">ไปทำแบบทดสอบ</button>
+    </div>
+    <div id="answersContent" style="display:none;"></div>
+  </div>
+</section>
+
+<!-- ============ PAGE 6: ADMIN ============ -->
+<section class="page" id="page-admin">
+  <div class="wrap" style="padding:36px 20px 70px;">
+    <h2 class="sectiontitle">จัดการข้อสอบ (สำหรับแอดมิน)</h2>
+    <p class="sectiondesc">แก้ไขโจทย์ จำนวนข้อ เวลาสอบ และดูประวัติผลคะแนนของนักเรียนได้จากหน้านี้</p>
+
+    <div id="adminLoginBox" class="admin-login-box">
+      <div class="lock-icon">🔒</div>
+      <p style="margin:0;">กรุณาใส่รหัสผ่านแอดมินเพื่อเข้าใช้งาน</p>
+      <input type="password" id="adminPassInput" placeholder="รหัสผ่านแอดมิน" autocomplete="off">
+      <button class="btn btn-primary" id="adminLoginBtn">เข้าสู่ระบบ</button>
+      <div class="admin-error" id="adminLoginError"></div>
+    </div>
+
+    <div id="adminPanel" style="display:none;">
+      <div class="admin-bar">
+        <span>เข้าสู่ระบบแอดมินแล้ว</span>
+        <button class="btn btn-quiet" id="adminLogoutBtn">ออกจากระบบ</button>
+      </div>
+
+      <div class="admin-panel-card">
+        <h3>ตั้งค่าการสอบ</h3>
+        <div class="admin-row">
+          <div class="admin-field">
+            <label for="setQuizCount">จำนวนข้อที่ใช้จริงในชุดข้อสอบ</label>
+            <input type="number" id="setQuizCount" min="1">
+          </div>
+          <div class="admin-field">
+            <label for="setTimerMinutes">เวลาทำข้อสอบ (นาที, 0 = ไม่จำกัดเวลา)</label>
+            <input type="number" id="setTimerMinutes" min="0">
+          </div>
+          <div class="admin-field" style="flex:none;">
+            <label>&nbsp;</label>
+            <button class="btn btn-primary" id="saveExamSettingsBtn">บันทึกการตั้งค่า</button>
+          </div>
+        </div>
+        <p style="font-size:0.85rem;color:var(--ink-soft);margin:6px 0 0;">คลังโจทย์ปัจจุบันมีทั้งหมด <strong id="poolCountLabel">0</strong> ข้อ</p>
+      </div>
+
+      <div class="admin-panel-card">
+        <h3>เปลี่ยนรหัสผ่านแอดมิน</h3>
+        <div class="admin-row">
+          <div class="admin-field"><label for="newPass1">รหัสผ่านใหม่</label><input type="password" id="newPass1"></div>
+          <div class="admin-field"><label for="newPass2">ยืนยันรหัสผ่านใหม่</label><input type="password" id="newPass2"></div>
+          <div class="admin-field" style="flex:none;"><label>&nbsp;</label><button class="btn btn-outline" id="changePassBtn">เปลี่ยนรหัสผ่าน</button></div>
+        </div>
+        <div class="admin-error" id="changePassError"></div>
+      </div>
+
+      <div class="admin-panel-card">
+        <h3>ประวัติผลสอบของนักเรียนที่ส่งเข้ามา</h3>
+        <p style="font-size:0.88rem;color:var(--ink-soft);margin:0 0 12px;">
+          บันทึกผลสอบชื่อ ชั้น เลขที่ และคะแนนย้อนหลังสูงสุด 50 รายการล่าสุด
+        </p>
+        <div id="historyList"></div>
+        <div class="adminform-actions">
+          <button class="btn btn-danger" id="clearSavedDataBtn">ลบข้อมูลผลสอบทั้งหมด</button>
+        </div>
+      </div>
+
+      <div class="admin-panel-card">
+        <h3>คลังโจทย์</h3>
+        <div class="adminform-actions" style="margin-top:0;margin-bottom:14px;">
+          <button class="btn btn-primary" id="addQuestionBtn">+ เพิ่มโจทย์ใหม่</button>
+          <button class="btn btn-outline" id="resetDefaultBtn">กู้คืนชุดข้อสอบเริ่มต้น (30 ข้อ)</button>
+        </div>
+        <div id="qbankList"></div>
+      </div>
+
+      <div class="admin-panel-card" id="questionFormCard" style="display:none;">
+        <h3 id="questionFormTitle">เพิ่มโจทย์ใหม่</h3>
+        <div class="admin-row">
+          <div class="admin-field" style="max-width:180px;">
+            <label for="qfType">ประเภทข้อสอบ</label>
+            <select id="qfType">
+              <option value="mc">ปรนัย (เลือกตอบ 4 ตัวเลือก)</option>
+              <option value="written">อัตนัย (พิมพ์คำตอบ)</option>
+            </select>
+          </div>
+          <div class="admin-field" style="max-width:220px;">
+            <label for="qfLevel">หมวดหมู่ / ระดับ</label>
+            <select id="qfLevel">
+              <option value="1">พื้นฐานตรีโกณมิติ</option>
+              <option value="2">sin cos tan</option>
+              <option value="3">หาความยาวด้าน</option>
+              <option value="4">หามุม</option>
+              <option value="5">พีทาโกรัส + ตรีโกณมิติ</option>
+              <option value="6">โจทย์ประยุกต์</option>
+              <option value="custom">กำหนดเอง...</option>
+            </select>
+          </div>
+          <div class="admin-field" id="qfLevelCustomWrap" style="display:none;">
+            <label for="qfLevelCustom">ชื่อหมวดหมู่ที่กำหนดเอง</label>
+            <input type="text" id="qfLevelCustom">
+          </div>
+        </div>
+        <div class="admin-field" style="margin-bottom:10px;">
+          <label for="qfQuestion">โจทย์คำถาม</label>
+          <textarea id="qfQuestion"></textarea>
+        </div>
+        <div class="admin-row">
+          <div class="admin-field"><label for="qfTriOpp">ป้ายกำกับด้านตรงข้าม (ถ้ามีรูปประกอบ)</label><input type="text" id="qfTriOpp" placeholder="เช่น ตรงข้าม = 3"></div>
+          <div class="admin-field"><label for="qfTriAdj">ป้ายกำกับด้านประชิด</label><input type="text" id="qfTriAdj" placeholder="เช่น ประชิด = 4"></div>
+          <div class="admin-field"><label for="qfTriHyp">ป้ายกำกับด้านตรงข้ามมุมฉาก</label><input type="text" id="qfTriHyp" placeholder="เช่น ตรงข้ามมุมฉาก = 5"></div>
+        </div>
+
+        <div id="qfMcSection">
+          <label style="font-size:0.86rem;color:var(--ink-soft);font-weight:600;">ตัวเลือกคำตอบ (เลือกวงกลมหน้าข้อที่ถูก)</label>
+          <div class="mc-choice-row"><input type="radio" name="qfCorrect" value="0"><input type="text" id="qfChoice0" placeholder="ตัวเลือก ก"></div>
+          <div class="mc-choice-row"><input type="radio" name="qfCorrect" value="1"><input type="text" id="qfChoice1" placeholder="ตัวเลือก ข"></div>
+          <div class="mc-choice-row"><input type="radio" name="qfCorrect" value="2"><input type="text" id="qfChoice2" placeholder="ตัวเลือก ค"></div>
+          <div class="mc-choice-row"><input type="radio" name="qfCorrect" value="3"><input type="text" id="qfChoice3" placeholder="ตัวเลือก ง"></div>
+        </div>
+
+        <div id="qfWrittenSection" style="display:none;">
+          <div class="admin-row">
+            <div class="admin-field"><label for="qfAnswer">คำตอบที่ถูกต้อง</label><input type="text" id="qfAnswer" placeholder="เช่น 36.87 หรือ ด้านตรงข้ามมุมฉาก"></div>
+            <div class="admin-field" style="flex:none;">
+              <label for="qfNumeric">เป็นคำตอบตัวเลข?</label>
+              <select id="qfNumeric"><option value="0">ไม่ใช่ (เทียบข้อความ)</option><option value="1">ใช่ (เทียบตัวเลข)</option></select>
+            </div>
+            <div class="admin-field" id="qfToleranceWrap" style="display:none;max-width:140px;">
+              <label for="qfTolerance">ค่าคลาดเคลื่อนที่ยอมรับ (±)</label>
+              <input type="text" id="qfTolerance" placeholder="เช่น 0.01">
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-field" style="margin-bottom:10px;">
+          <label for="qfSteps">วิธีทำ (พิมพ์ทีละขั้นตอน 1 บรรทัดต่อ 1 ขั้น)</label>
+          <textarea id="qfSteps" style="min-height:100px;"></textarea>
+        </div>
+        <div class="admin-field" style="margin-bottom:6px;">
+          <label for="qfWhy">เหตุผลที่เลือกใช้สูตรนี้</label>
+          <textarea id="qfWhy"></textarea>
+        </div>
+
+        <div class="admin-error" id="questionFormError"></div>
+        <div class="adminform-actions">
+          <button class="btn btn-primary" id="saveQuestionBtn">บันทึกโจทย์นี้</button>
+          <button class="btn btn-quiet" id="cancelQuestionBtn">ยกเลิก</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="page" id="page-lesson-summary-holder"></section>
+
+<footer class="site-footer">
+  <p>สื่อการเรียนรู้คณิตศาสตร์ ม.3 เรื่อง ตรีโกณมิติ</p>
+  <p>จัดทำเพื่อการศึกษา</p>
+</footer>
+
+<div class="modal-backdrop" id="confirmModal">
+  <div class="modal-box">
+    <h3>ยืนยันการส่งคำตอบ</h3>
+    <p id="confirmModalText">คุณต้องการส่งคำตอบหรือไม่?</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline" id="confirmCancel">ยกเลิก</button>
+      <button class="btn btn-primary" id="confirmOk">ยืนยัน</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- THEME ---------- */
+var themeBtn=document.getElementById('themeBtn');
+function applyTheme(t){
+  if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');themeBtn.textContent='☀️';}
+  else{document.documentElement.setAttribute('data-theme','light');themeBtn.textContent='🌙';}
+}
+try{
+  var savedTheme=localStorage.getItem('trig_theme');
+  applyTheme(savedTheme==='dark'?'dark':'light');
+}catch(e){applyTheme('light');}
+themeBtn.addEventListener('click',function(){
+  var cur=document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';
+  var next=cur==='dark'?'light':'dark';
+  applyTheme(next);
+  try{localStorage.setItem('trig_theme',next);}catch(e){}
+});
+
+/* ---------- NAV ---------- */
+var pages=document.querySelectorAll('.page');
+var navBtns=document.querySelectorAll('nav.navlinks button');
+var menuBtn=document.getElementById('menuBtn');
+var navlinks=document.getElementById('navlinks');
+
+function goPage(name){
+  pages.forEach(function(p){p.classList.remove('active');});
+  var target=document.getElementById('page-'+name);
+  if(target) target.classList.add('active');
+  navBtns.forEach(function(b){
+    if(b.getAttribute('data-page')===name) b.setAttribute('aria-current','page');
+    else b.removeAttribute('aria-current');
+  });
+  navlinks.classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(name==='answers') renderAnswersIfUnlocked();
+  if(name==='results') renderResultsIfAvailable();
+  if(name==='quiz'){ refreshQuizData(); ensureQuizDeadline(); renderQuestion(); updateTimerDisplay(); }
+  if(name==='admin') renderAdminPanel();
+}
+document.querySelectorAll('[data-page]').forEach(function(el){
+  el.addEventListener('click',function(){goPage(el.getAttribute('data-page'));});
+});
+menuBtn.addEventListener('click',function(){
+  var open=navlinks.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded',open?'true':'false');
+});
+
+/* ---------- TOAST ---------- */
+var toastEl=document.getElementById('toast');
+var toastTimer=null;
+function toast(msg){
+  toastEl.textContent=msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){toastEl.classList.remove('show');},2200);
+}
+
+/* ---------- STORAGE HELPERS ---------- */
+var STORAGE_KEY='trig_m3_state_v1';
+function loadState(){
+  try{
+    var raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){return null;}
+}
+function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+  }catch(e){/* storage unavailable */}
+}
+var state={
+  name:'',
+  studentClass:'',
+  studentNo:'',
+  answers:{},      // {questionIndex: choiceIndex}
+  submitted:false,
+  score:null,
+  breakdown:null,
+  deadline:null,
+  totalAtSubmission:null,
+  history:[]
+};
+var loaded=loadState();
+if(loaded){
+  state.name=loaded.name||'';
+  state.studentClass=loaded.studentClass||'';
+  state.studentNo=loaded.studentNo||'';
+  state.answers=loaded.answers||{};
+  state.submitted=!!loaded.submitted;
+  state.score=(typeof loaded.score==='number')?loaded.score:null;
+  state.breakdown=loaded.breakdown||null;
+  state.deadline=(typeof loaded.deadline==='number')?loaded.deadline:null;
+  state.totalAtSubmission=(typeof loaded.totalAtSubmission==='number')?loaded.totalAtSubmission:null;
+  state.history=Array.isArray(loaded.history)?loaded.history:[];
+}
+
+/* ---------- COVER ---------- */
+var studentNameInput=document.getElementById('studentName');
+var studentClassInput=document.getElementById('studentClass');
+var studentNoInput=document.getElementById('studentNo');
+
+studentNameInput.value=state.name;
+studentClassInput.value=state.studentClass;
+studentNoInput.value=state.studentNo;
+
+studentNameInput.addEventListener('input',function(){ state.name=studentNameInput.value; saveState(); });
+studentClassInput.addEventListener('input',function(){ state.studentClass=studentClassInput.value; saveState(); });
+studentNoInput.addEventListener('input',function(){ state.studentNo=studentNoInput.value; saveState(); });
+
+document.getElementById('startBtn').addEventListener('click',function(){
+  goPage('lesson');
+});
+
+/* ---------- CHECKLIST ---------- */
+var checklistData=[
+  '1. วาดรูปก่อน',
+  '2. หามุมที่โจทย์สนใจ',
+  '3. ระบุด้าน ข้าม / ชิด / ฉาก',
+  '4. เลือก sin / cos / tan',
+  '5. แทนค่าลงสูตร',
+  '6. แก้สมการ',
+  '7. ตรวจคำตอบและหน่วย'
+];
+var checklistWrap=document.getElementById('checklistItems');
+var checklistState={};
+try{ checklistState=JSON.parse(localStorage.getItem('trig_checklist')||'{}'); }catch(e){checklistState={};}
+checklistData.forEach(function(txt,i){
+  var row=document.createElement('div');
+  row.className='check-item'+(checklistState[i]?' checked':'');
+  var id='chk-'+i;
+  row.innerHTML='<input type="checkbox" id="'+id+'" '+(checklistState[i]?'checked':'')+'><label for="'+id+'">'+txt+'</label>';
+  checklistWrap.appendChild(row);
+  row.querySelector('input').addEventListener('change',function(ev){
+    checklistState[i]=ev.target.checked;
+    row.classList.toggle('checked',ev.target.checked);
+    try{localStorage.setItem('trig_checklist',JSON.stringify(checklistState));}catch(e){}
+  });
+});
+
+/* ---------- TRIANGLE SVG GENERATOR ---------- */
+function triangleSVG(oppLabel,adjLabel,hypLabel){
+  return '<div class="tri-wrap"><svg viewBox="0 0 260 200" role="img" aria-label="รูปสามเหลี่ยมมุมฉากประกอบโจทย์">'+
+    '<polygon points="25,175 235,175 235,25" fill="none" stroke="#233A5E" stroke-width="4"/>'+
+    '<rect x="215" y="155" width="20" height="20" fill="none" stroke="#233A5E" stroke-width="3"/>'+
+    '<path d="M 70 175 A 45 45 0 0 0 56 146" fill="none" stroke="#C08A2E" stroke-width="3"/>'+
+    '<text x="76" y="163" font-size="15" fill="#C08A2E" font-weight="700">θ</text>'+
+    '<text x="105" y="196" font-size="14" fill="#2B2416">'+adjLabel+'</text>'+
+    '<text x="240" y="100" font-size="14" fill="#2B2416">'+oppLabel+'</text>'+
+    '<text x="90" y="90" font-size="14" fill="#2B2416" transform="rotate(-37 90 90)">'+hypLabel+'</text>'+
+    '</svg></div>';
+}
+
+/* ---------- QUIZ DATA (30 default questions) ---------- */
+var DEFAULT_Q=[
+{level:1,q:'ตรีโกณมิติเกี่ยวข้องโดยตรงกับรูปเรขาคณิตชนิดใด',choices:['สามเหลี่ยมด้านเท่า','สามเหลี่ยมมุมฉาก','วงกลม','สี่เหลี่ยมจัตุรัส'],correct:1,
+ steps:['ตรีโกณมิติศึกษาความสัมพันธ์ระหว่างมุมกับด้านในรูปสามเหลี่ยมมุมฉากโดยตรง'],why:'สูตร sin cos tan ทั้งหมดถูกนิยามจากด้านทั้งสามของสามเหลี่ยมมุมฉากเท่านั้น'},
+
+{level:1,q:'ในสามเหลี่ยมมุมฉาก มุมที่มีขนาด 90° เรียกว่าอะไร',choices:['มุมแหลม','มุมป้าน','มุมฉาก','มุมตรง'],correct:2,
+ steps:['มุมขนาด 90° มีชื่อเฉพาะว่า "มุมฉาก" เป็นมุมที่กำหนดว่าสามเหลี่ยมนั้นเป็นสามเหลี่ยมมุมฉาก'],why:'นิยามพื้นฐานของสามเหลี่ยมมุมฉากคือมีมุมหนึ่งเท่ากับ 90° พอดี'},
+
+{level:1,q:'ด้านที่ยาวที่สุดในสามเหลี่ยมมุมฉาก ซึ่งอยู่ตรงข้ามมุมฉาก เรียกว่าอะไร',choices:['ด้านประชิด','ด้านตรงข้าม','ด้านตรงข้ามมุมฉาก','ด้านฐาน'],correct:2,
+ steps:['ด้านที่อยู่ตรงข้ามมุม 90° เสมอ และเป็นด้านที่ยาวที่สุดในสามเหลี่ยมมุมฉาก เรียกว่าด้านตรงข้ามมุมฉาก (Hypotenuse)'],why:'ด้านนี้ไม่เปลี่ยนชื่อไม่ว่าจะสนใจมุมแหลมมุมใดในสามเหลี่ยม'},
+
+{level:1,q:'ถ้าสนใจมุม θ ด้านที่อยู่ตรงข้ามมุม θ พอดี (ไม่ใช่มุมฉาก) เรียกว่าอะไร',choices:['ด้านตรงข้ามมุมฉาก','ด้านตรงข้าม','ด้านประชิด','ด้านร่วม'],correct:1,
+ steps:['ด้านที่อยู่ฝั่งตรงข้ามกับมุม θ ที่กำลังพิจารณาพอดี เรียกว่าด้านตรงข้าม (Opposite)'],why:'ชื่อด้านนี้เปลี่ยนไปตามมุมที่เราเลือกสนใจในสามเหลี่ยม'},
+
+{level:1,q:'ด้านที่อยู่ติดกับมุม θ แต่ไม่ใช่ด้านตรงข้ามมุมฉาก เรียกว่าอะไร',choices:['ด้านตรงข้าม','ด้านตรงข้ามมุมฉาก','ด้านประชิด','ด้านขนาน'],correct:2,
+ steps:['ด้านที่แนบชิดกับมุม θ อยู่ (ไม่ใช่ด้านที่ยาวที่สุด) เรียกว่าด้านประชิด (Adjacent)'],why:'ด้านประชิดกับด้านตรงข้ามมุมฉากประกอบกันเป็นมุมฉาก 90° ที่จุดยอด'},
+
+{level:2,q:'สามเหลี่ยมมุมฉากมีด้านตรงข้ามมุม θ ยาว 3 ซม. ด้านตรงข้ามมุมฉากยาว 5 ซม. sin θ มีค่าเท่าใด',choices:['3/5','4/5','3/4','4/3'],correct:0,
+ tri:['ตรงข้าม = 3','ประชิด = 4','ตรงข้ามมุมฉาก = 5'],
+ steps:['sin θ = ด้านตรงข้าม / ด้านตรงข้ามมุมฉาก','sin θ = 3 / 5','sin θ = 0.6'],why:'โจทย์ให้ด้าน "ข้าม" และ "ฉาก" มาครบ ตรงกับนิยามของ sin โดยตรง (SOH)'},
+
+{level:2,q:'จากรูปสามเหลี่ยมมุมฉาก ด้านประชิดมุม θ ยาว 4 ซม. ด้านตรงข้ามมุมฉากยาว 5 ซม. cos θ มีค่าเท่าใด',choices:['3/5','5/4','4/5','3/4'],correct:2,
+ tri:['ตรงข้าม = 3','ประชิด = 4','ตรงข้ามมุมฉาก = 5'],
+ steps:['cos θ = ด้านประชิด / ด้านตรงข้ามมุมฉาก','cos θ = 4 / 5','cos θ = 0.8'],why:'โจทย์ให้ด้าน "ชิด" และ "ฉาก" มาครบ ตรงกับนิยามของ cos โดยตรง (CAH)'},
+
+{level:2,q:'สามเหลี่ยมมุมฉากมีด้านตรงข้ามมุม θ ยาว 8 ซม. ด้านประชิดยาว 15 ซม. tan θ มีค่าเท่าใด',choices:['15/8','8/17','8/15','15/17'],correct:2,
+ tri:['ตรงข้าม = 8','ประชิด = 15','ตรงข้ามมุมฉาก = 17'],
+ steps:['tan θ = ด้านตรงข้าม / ด้านประชิด','tan θ = 8 / 15'],why:'โจทย์ให้ด้าน "ข้าม" และ "ชิด" มาครบ ตรงกับนิยามของ tan โดยตรง (TOA)'},
+
+{level:2,q:'สามเหลี่ยมมุมฉากมีด้านตรงข้ามมุม θ ยาว 6 ซม. ด้านตรงข้ามมุมฉากยาว 10 ซม. sin θ มีค่าเท่าใด',choices:['0.4','0.6','0.8','0.75'],correct:1,
+ tri:['ตรงข้าม = 6','ประชิด = 8','ตรงข้ามมุมฉาก = 10'],
+ steps:['sin θ = ด้านตรงข้าม / ด้านตรงข้ามมุมฉาก','sin θ = 6 / 10','sin θ = 0.6'],why:'ใช้นิยาม sin = ข้าม/ฉาก แทนค่าตรง ๆ ได้เลยโดยไม่ต้องหาด้านที่สาม'},
+
+{level:2,q:'สามเหลี่ยมมุมฉากมีด้านประชิดมุม θ ยาว 12 ซม. ด้านตรงข้ามมุมฉากยาว 13 ซม. cos θ มีค่าเท่าใด',choices:['5/13','12/13','13/12','5/12'],correct:1,
+ tri:['ตรงข้าม = 5','ประชิด = 12','ตรงข้ามมุมฉาก = 13'],
+ steps:['cos θ = ด้านประชิด / ด้านตรงข้ามมุมฉาก','cos θ = 12 / 13'],why:'ใช้นิยาม cos = ชิด/ฉาก แทนค่าตรง ๆ ได้เลย'},
+
+{level:3,q:'บันไดพาดกำแพงทำมุม 30° กับพื้น ยาว 10 เมตร บันไดพาดสูงจากพื้นกี่เมตร',choices:['10 เมตร','8.66 เมตร','5 เมตร','7.5 เมตร'],correct:2,
+ tri:['θ = 30°','ตรงข้ามมุมฉาก (บันได) = 10 ม.','ต้องการหา: ด้านตรงข้าม (ความสูง)'],
+ steps:['โจทย์ให้ "ฉาก" และต้องการหา "ข้าม" → ใช้ sin','sin θ = ด้านตรงข้าม / ด้านตรงข้ามมุมฉาก','sin 30° = ความสูง / 10','0.5 = ความสูง / 10','ความสูง = 0.5 × 10 = 5 เมตร'],
+ why:'sin 30° เป็นค่ามุมพิเศษที่เท่ากับ 0.5 พอดี ทำให้คำนวณได้ตัวเลขลงตัว'},
+
+{level:3,q:'มุมเงยจากจุดที่ห่างจากเสา 8 เมตร ไปยังยอดเสาเป็นมุม 60° เสาสูงกี่เมตร (ทศนิยม 2 ตำแหน่ง)',choices:['13.86 เมตร','9.24 เมตร','6.93 เมตร','4.00 เมตร'],correct:0,
+ tri:['θ = 60°','ประชิด (ระยะห่างจากเสา) = 8 ม.','ต้องการหา: ด้านตรงข้าม (ความสูงเสา)'],
+ steps:['โจทย์ให้ "ชิด" และต้องการหา "ข้าม" → ใช้ tan','tan θ = ด้านตรงข้าม / ด้านประชิด','tan 60° = ความสูง / 8','ความสูง = 8 × tan 60°','ความสูง = 8 × 1.7321 ≈ 13.86 เมตร'],
+ why:'tan 60° ≈ 1.7321 เป็นค่าคงที่ที่หาได้จากเครื่องคิดเลขวิทยาศาสตร์'},
+
+{level:3,q:'มุม θ = 40° ด้านประชิดยาว 12 ซม. ด้านตรงข้ามยาวเท่าใด (ทศนิยม 2 ตำแหน่ง)',choices:['9.19 ซม.','7.71 ซม.','10.07 ซม.','15.66 ซม.'],correct:2,
+ tri:['θ = 40°','ประชิด = 12 ซม.','ต้องการหา: ด้านตรงข้าม'],
+ steps:['โจทย์ให้ "ชิด" และต้องการหา "ข้าม" → ใช้ tan','tan θ = ด้านตรงข้าม / ด้านประชิด','tan 40° = ด้านตรงข้าม / 12','ด้านตรงข้าม = 12 × tan 40°','ด้านตรงข้าม ≈ 12 × 0.8391 ≈ 10.07 ซม.'],
+ why:'กดเครื่องคิดเลข tan(40) ก่อน แล้วจึงนำไปคูณกับ 12'},
+
+{level:3,q:'มุม θ = 35° ด้านตรงข้ามมุมฉากยาว 20 ซม. ด้านประชิดยาวเท่าใด (ทศนิยม 2 ตำแหน่ง)',choices:['11.47 ซม.','16.38 ซม.','14.00 ซม.','24.42 ซม.'],correct:1,
+ tri:['θ = 35°','ตรงข้ามมุมฉาก = 20 ซม.','ต้องการหา: ด้านประชิด'],
+ steps:['โจทย์ให้ "ฉาก" และต้องการหา "ชิด" → ใช้ cos','cos θ = ด้านประชิด / ด้านตรงข้ามมุมฉาก','cos 35° = ด้านประชิด / 20','ด้านประชิด = 20 × cos 35°','ด้านประชิด ≈ 20 × 0.8192 ≈ 16.38 ซม.'],
+ why:'cos ใช้เมื่อมีด้าน "ชิด" กับ "ฉาก" เกี่ยวข้องกันเท่านั้น'},
+
+{level:3,q:'มุม θ = 52° ด้านตรงข้ามยาว 15 ซม. ด้านตรงข้ามมุมฉากยาวเท่าใด (ทศนิยม 2 ตำแหน่ง)',choices:['9.23 ซม.','24.36 ซม.','11.82 ซม.','19.04 ซม.'],correct:3,
+ tri:['θ = 52°','ตรงข้าม = 15 ซม.','ต้องการหา: ด้านตรงข้ามมุมฉาก'],
+ steps:['โจทย์ให้ "ข้าม" และต้องการหา "ฉาก" → ใช้ sin','sin θ = ด้านตรงข้าม / ด้านตรงข้ามมุมฉาก','sin 52° = 15 / ด้านตรงข้ามมุมฉาก','ด้านตรงข้ามมุมฉาก = 15 / sin 52°','ด้านตรงข้ามมุมฉาก ≈ 15 / 0.7880 ≈ 19.04 ซม.'],
+ why:'เมื่อสิ่งที่ต้องหาอยู่ในตัวหารของสูตร ต้องจัดสมการก่อนแทนค่าคำนวณ'},
+
+{level:4,q:'สามเหลี่ยมมุมฉากมีด้านตรงข้าม 3 ซม. ด้านประชิด 4 ซม. มุม θ มีค่าประมาณเท่าใด',choices:['53.13°','45.00°','36.87°','30.00°'],correct:2,
+ tri:['ตรงข้าม = 3','ประชิด = 4','ตรงข้ามมุมฉาก = 5'],
+ steps:['รู้ด้าน "ข้าม" และ "ชิด" → ใช้ tan⁻¹','tan θ = 3/4','θ = tan⁻¹(3/4)','θ ≈ 36.87°'],
+ why:'เมื่อรู้ด้านสองด้านแต่ไม่รู้มุม ต้องใช้ฟังก์ชันผกผัน (tan⁻¹) เพื่อย้อนกลับไปหามุม'},
+
+{level:4,q:'สามเหลี่ยมมุมฉากมีด้านตรงข้าม 5 ซม. ด้านตรงข้ามมุมฉาก 13 ซม. มุม θ มีค่าประมาณเท่าใด',choices:['67.38°','22.62°','36.87°','30.96°'],correct:1,
+ tri:['ตรงข้าม = 5','ประชิด = 12','ตรงข้ามมุมฉาก = 13'],
+ steps:['รู้ด้าน "ข้าม" และ "ฉาก" → ใช้ sin⁻¹','sin θ = 5/13','θ = sin⁻¹(5/13)','θ ≈ 22.62°'],
+ why:'เมื่อโจทย์ให้ด้านตรงข้ามและด้านตรงข้ามมุมฉาก ให้ใช้ sin⁻¹ เสมอ'},
+
+{level:4,q:'สามเหลี่ยมมุมฉากมีด้านประชิด 15 ซม. ด้านตรงข้ามมุมฉาก 17 ซม. มุม θ มีค่าประมาณเท่าใด',choices:['61.93°','28.07°','16.26°','73.74°'],correct:1,
+ tri:['ตรงข้าม = 8','ประชิด = 15','ตรงข้ามมุมฉาก = 17'],
+ steps:['รู้ด้าน "ชิด" และ "ฉาก" → ใช้ cos⁻¹','cos θ = 15/17','θ = cos⁻¹(15/17)','θ ≈ 28.07°'],
+ why:'เมื่อโจทย์ให้ด้านประชิดและด้านตรงข้ามมุมฉาก ให้ใช้ cos⁻¹ เสมอ'},
+
+{level:4,q:'สามเหลี่ยมมุมฉากมีด้านตรงข้าม 7 ซม. ด้านประชิด 24 ซม. มุม θ มีค่าประมาณเท่าใด',choices:['73.74°','16.26°','22.62°','67.38°'],correct:1,
+ tri:['ตรงข้าม = 7','ประชิด = 24','ตรงข้ามมุมฉาก = 25'],
+ steps:['รู้ด้าน "ข้าม" และ "ชิด" → ใช้ tan⁻¹','tan θ = 7/24','θ = tan⁻¹(7/24)','θ ≈ 16.26°'],
+ why:'ฝึกสังเกตว่าด้านสองด้านที่โจทย์ให้เป็นคู่ ข้าม-ชิด จึงเลือก tan⁻¹'},
+
+{level:4,q:'สามเหลี่ยมมุมฉากมีด้านตรงข้าม 9 ซม. ด้านตรงข้ามมุมฉาก 15 ซม. มุม θ มีค่าประมาณเท่าใด',choices:['53.13°','48.19°','36.87°','30.00°'],correct:2,
+ tri:['ตรงข้าม = 9','ประชิด = 12','ตรงข้ามมุมฉาก = 15'],
+ steps:['รู้ด้าน "ข้าม" และ "ฉาก" → ใช้ sin⁻¹','sin θ = 9/15 = 0.6','θ = sin⁻¹(0.6)','θ ≈ 36.87°'],
+ why:'อัตราส่วน 9/15 ลดรูปเป็น 3/5 ซึ่งเป็นอัตราส่วนของสามเหลี่ยม 3-4-5 ที่พบบ่อย'},
+
+{level:5,q:'สามเหลี่ยมมุมฉากมีด้านประกอบมุมฉากยาว 6 ซม. และ 8 ซม. ด้านตรงข้ามมุมฉากยาวเท่าใด',choices:['12 ซม.','14 ซม.','10 ซม.','48 ซม.'],correct:2,
+ steps:['ใช้ทฤษฎีบทพีทาโกรัส c² = a² + b²','c² = 6² + 8² = 36 + 64 = 100','c = √100 = 10 ซม.'],why:'6-8-10 เป็นอัตราส่วนของสามเหลี่ยมพีทาโกรัสชุด 3-4-5 คูณด้วย 2'},
+
+{level:5,q:'สามเหลี่ยมมุมฉากมีด้านตรงข้ามมุมฉากยาว 13 ซม. ด้านหนึ่งยาว 5 ซม. อีกด้านหนึ่งยาวเท่าใด',choices:['8 ซม.','12 ซม.','18 ซม.','10 ซม.'],correct:1,
+ steps:['ใช้ทฤษฎีบทพีทาโกรัส b² = c² − a²','b² = 13² − 5² = 169 − 25 = 144','b = √144 = 12 ซม.'],why:'เมื่อรู้ด้านตรงข้ามมุมฉากและด้านประกอบมุมฉากหนึ่งด้าน ให้ย้ายข้างสมการก่อนถอดราก'},
+
+{level:5,q:'สามเหลี่ยมมุมฉากมีด้าน 9, 12, 15 ซม. ถ้า θ อยู่ตรงข้ามด้าน 9 ซม. แล้ว cos θ มีค่าเท่าใด',choices:['9/15','9/12','12/15','12/9'],correct:2,
+ steps:['ตรวจสอบว่า 9-12-15 เป็นสามเหลี่ยมมุมฉาก (9²+12²=15² จริง)','ด้านตรงข้าม θ = 9, ด้านประชิด θ = 12, ด้านตรงข้ามมุมฉาก = 15','cos θ = ด้านประชิด / ด้านตรงข้ามมุมฉาก = 12/15'],why:'ต้องระบุก่อนว่าด้านใดเป็นตรงข้าม/ประชิดของมุม θ ที่โจทย์ระบุ ก่อนเลือกสูตร cos'},
+
+{level:5,q:'สามเหลี่ยมมุมฉากมีด้านประกอบมุมฉาก 7 และ 24 ซม. ถ้า θ อยู่ตรงข้ามด้าน 7 แล้ว sin θ มีค่าเท่าใด',choices:['7/24','7/25','24/25','24/7'],correct:1,
+ steps:['หาด้านตรงข้ามมุมฉากก่อนด้วยพีทาโกรัส: c² = 7² + 24² = 49+576 = 625','c = √625 = 25 ซม.','sin θ = ด้านตรงข้าม / ด้านตรงข้ามมุมฉาก = 7/25'],why:'ต้องหาด้านที่สามให้ครบก่อน จึงจะสามารถหาค่า sin θ ได้'},
+
+{level:5,q:'สามเหลี่ยมมุมฉากมีด้านประกอบมุมฉาก 10 และ 24 ซม. ถ้า θ อยู่ตรงข้ามด้าน 24 แล้ว tan θ มีค่าเท่าใด',choices:['10/24','24/26','2.4','10/26'],correct:2,
+ steps:['หาด้านตรงข้ามมุมฉากก่อนด้วยพีทาโกรัส: c² = 10² + 24² = 100+576 = 676','c = √676 = 26 ซม.','tan θ = ด้านตรงข้าม / ด้านประชิด = 24/10 = 2.4'],why:'tan ไม่เกี่ยวข้องกับด้านตรงข้ามมุมฉากเลย ใช้แค่ด้านข้ามกับด้านชิดเท่านั้น'},
+
+{level:6,q:'บันไดยาว 6 เมตร ทำมุม 60° กับพื้น บันไดพาดสูงจากพื้นกี่เมตร (ทศนิยม 2 ตำแหน่ง)',choices:['3.00 เมตร','5.20 เมตร','6.93 เมตร','10.39 เมตร'],correct:1,
+ tri:['θ = 60°','ตรงข้ามมุมฉาก (บันได) = 6 ม.','ต้องการหา: ความสูง (ตรงข้าม)'],
+ steps:['วาดรูป: บันไดเป็นด้านตรงข้ามมุมฉาก ความสูงเป็นด้านตรงข้ามมุม 60°','ใช้ sin θ = ข้าม/ฉาก','sin 60° = ความสูง / 6','ความสูง = 6 × sin 60° ≈ 6 × 0.8660 ≈ 5.20 เมตร'],
+ why:'ระยะที่บันไดพาด "สูงจากพื้น" คือด้านตรงข้ามมุมเสมอ ไม่ใช่ความยาวบันไดเอง'},
+
+{level:6,q:'เสาไฟสูง 6 เมตร เกิดเงายาว 10 เมตร มุมเงยของดวงอาทิตย์มีค่าประมาณเท่าใด',choices:['36.87°','30.96°','53.13°','59.04°'],correct:1,
+ tri:['ตรงข้าม (ความสูงเสา) = 6 ม.','ประชิด (เงา) = 10 ม.'],
+ steps:['วาดรูป: ความสูงเสาคือด้านตรงข้าม เงาคือด้านประชิดของมุมเงย','ใช้ tan θ = ข้าม/ชิด','tan θ = 6/10 = 0.6','θ = tan⁻¹(0.6) ≈ 30.96°'],
+ why:'มุมเงยของดวงอาทิตย์คือมุมระหว่างพื้น (เงา) กับเส้นตรงไปยังยอดเสา'},
+
+{level:6,q:'คนสูง 1.5 เมตร ยืนห่างตึก 40 เมตร มองมุมเงยไปยอดตึกเป็นมุม 35° ตึกสูงกี่เมตร (ทศนิยม 2 ตำแหน่ง)',choices:['28.01 เมตร','29.51 เมตร','30.51 เมตร','24.44 เมตร'],correct:1,
+ tri:['θ = 35°','ประชิด (ระยะห่าง) = 40 ม.','ต้องบวกความสูงตา 1.5 ม. ในตอนท้าย'],
+ steps:['หาความสูงจากระดับสายตาถึงยอดตึกก่อนด้วย tan','tan 35° = ความสูง(จากตา) / 40','ความสูง(จากตา) = 40 × tan 35° ≈ 40 × 0.7002 ≈ 28.01 เมตร','ความสูงตึกทั้งหมด = 28.01 + 1.5 ≈ 29.51 เมตร'],
+ why:'เมื่อโจทย์ให้ความสูงของผู้สังเกต ต้องบวกความสูงตานั้นกลับเข้าไปในคำตอบสุดท้ายเสมอ'},
+
+{level:6,q:'ตึกสูง 30 เมตร เมื่อมุมเงยของดวงอาทิตย์เป็น 25° เงาของตึกทอดยาวกี่เมตร (ทศนิยม 2 ตำแหน่ง)',choices:['14.00 เมตร','64.34 เมตร','27.19 เมตร','33.10 เมตร'],correct:1,
+ tri:['θ = 25°','ตรงข้าม (ความสูงตึก) = 30 ม.','ต้องการหา: เงา (ประชิด)'],
+ steps:['วาดรูป: ความสูงตึกคือด้านตรงข้าม เงาคือด้านประชิด','ใช้ tan θ = ข้าม/ชิด','tan 25° = 30 / เงา','เงา = 30 / tan 25° ≈ 30 / 0.4663 ≈ 64.34 เมตร'],
+ why:'เมื่อสิ่งที่ต้องการหาอยู่ในตัวหาร ต้องจัดสมการสลับข้างก่อนคำนวณด้วยเครื่องคิดเลข'},
+
+{level:6,q:'ต้นไม้สูง 30 เมตร คนต้องยืนห่างต้นไม้กี่เมตร จึงมองยอดต้นไม้เป็นมุมเงย 30° (ทศนิยม 2 ตำแหน่ง)',choices:['51.96 เมตร','17.32 เมตร','25.98 เมตร','60.00 เมตร'],correct:0,
+ tri:['θ = 30°','ตรงข้าม (ความสูงต้นไม้) = 30 ม.','ต้องการหา: ระยะห่าง (ประชิด)'],
+ steps:['วาดรูป: ความสูงต้นไม้คือด้านตรงข้าม ระยะห่างคือด้านประชิด','ใช้ tan θ = ข้าม/ชิด','tan 30° = 30 / ระยะห่าง','ระยะห่าง = 30 / tan 30° ≈ 30 / 0.5774 ≈ 51.96 เมตร'],
+ why:'ยิ่งมุมเงยเล็ก ยิ่งต้องยืนไกลจากต้นไม้มากขึ้น สอดคล้องกับผลลัพธ์ที่ได้'}
+];
+
+/* ---------- ADMIN DATA ---------- */
+var ADMIN_KEY='trig_admin_data_v1';
+var ADMIN_SESSION_KEY='trig_admin_session_v1';
+function hashStr(str){
+  var h=5381;
+  str=String(str);
+  for(var i=0;i<str.length;i++){ h=((h*33)^str.charCodeAt(i))>>>0; }
+  return 'h'+h.toString(36);
+}
+var adminData={
+  passHash:hashStr('TrigoM3-7Kp9!Q2vL8#'),
+  timerMinutes:0,
+  quizCount:DEFAULT_Q.length,
+  questions:null
+};
+(function loadAdminData(){
+  try{
+    var raw=localStorage.getItem(ADMIN_KEY);
+    if(raw){
+      var parsed=JSON.parse(raw);
+      if(parsed && typeof parsed==='object'){
+        if(parsed.passHash) adminData.passHash=parsed.passHash;
+        if(typeof parsed.timerMinutes==='number') adminData.timerMinutes=parsed.timerMinutes;
+        if(typeof parsed.quizCount==='number') adminData.quizCount=parsed.quizCount;
+        if(Array.isArray(parsed.questions)) adminData.questions=parsed.questions;
+      }
+    }
+  }catch(e){}
+})();
+function saveAdminData(){
+  try{ localStorage.setItem(ADMIN_KEY,JSON.stringify(adminData)); }catch(e){}
+}
+var isAdmin=false;
+try{ isAdmin=(sessionStorage.getItem(ADMIN_SESSION_KEY)==='1'); }catch(e){isAdmin=false;}
+
+function getPool(){ return (adminData.questions && adminData.questions.length) ? adminData.questions : DEFAULT_Q; }
+
+/* ---------- QUIZ RENDER ---------- */
+var Q=getPool().slice(0, Math.max(1, Math.min(adminData.quizCount||getPool().length, getPool().length)));
+var TOTAL=Q.length;
+var current=0;
+function refreshQuizData(){
+  var pool=getPool();
+  var count=Math.max(1, Math.min(adminData.quizCount||pool.length, pool.length));
+  Q=pool.slice(0,count);
+  TOTAL=Q.length;
+  if(current>=TOTAL) current=TOTAL-1;
+  buildJumpgrid();
+}
+
+var qnumLabel=document.getElementById('qnumLabel');
+var qpctLabel=document.getElementById('qpctLabel');
+var progressFill=document.getElementById('progressFill');
+var qlevelTag=document.getElementById('qlevelTag');
+var qtext=document.getElementById('qtext');
+var qdiagram=document.getElementById('qdiagram');
+var choicesWrap=document.getElementById('choicesWrap');
+var prevBtn=document.getElementById('prevBtn');
+var nextBtn=document.getElementById('nextBtn');
+var submitBtn=document.getElementById('submitBtn');
+var jumpgrid=document.getElementById('jumpgrid');
+
+var levelNames={1:'พื้นฐานตรีโกณมิติ',2:'sin cos tan',3:'หาความยาวด้าน',4:'หามุม',5:'พีทาโกรัส + ตรีโกณมิติ',6:'โจทย์ประยุกต์'};
+
+function buildJumpgrid(){
+  jumpgrid.innerHTML='';
+  for(var i=0;i<TOTAL;i++){
+    var b=document.createElement('button');
+    b.type='button';
+    b.textContent=(i+1);
+    (function(idx){ b.addEventListener('click',function(){ current=idx; renderQuestion(); }); })(i);
+    jumpgrid.appendChild(b);
+  }
+}
+function updateJumpgrid(){
+  var btns=jumpgrid.querySelectorAll('button');
+  btns.forEach(function(b,i){
+    b.classList.toggle('answered', state.answers.hasOwnProperty(i));
+    b.classList.toggle('current', i===current);
+  });
+}
+
+function renderQuestion(){
+  var item=Q[current];
+  qnumLabel.textContent='ข้อ '+(current+1)+' / '+TOTAL;
+  var answeredCount=Object.keys(state.answers).length;
+  var pct=Math.round((answeredCount/TOTAL)*100);
+  qpctLabel.textContent='ทำไปแล้ว '+pct+'%';
+  progressFill.style.width=pct+'%';
+  qlevelTag.textContent=item.levelLabel || levelNames[item.level] || 'โจทย์เพิ่มเติม';
+  qtext.textContent=(current+1)+'. '+item.q;
+
+  if(item.tri){
+    qdiagram.innerHTML=triangleSVG(item.tri[0]||'',item.tri[1]||'',item.tri[2]||'');
+  }else{
+    qdiagram.innerHTML='';
+  }
+
+  choicesWrap.innerHTML='';
+  var letters=['ก','ข','ค','ง'];
+  if(item.type==='written'){
+    var inp=document.createElement('input');
+    inp.type='text';
+    inp.className='written-input';
+    inp.placeholder='พิมพ์คำตอบที่ได้จากการคำนวณ';
+    inp.value=(state.answers[current]!==undefined)?state.answers[current]:'';
+    inp.addEventListener('input',function(){
+      state.answers[current]=inp.value;
+      saveState();
+      updateJumpgrid();
+    });
+    choicesWrap.appendChild(inp);
+    var hint=document.createElement('div');
+    hint.className='written-hint';
+    hint.textContent=item.numeric?'ตอบเป็นตัวเลข':'พิมพ์คำตอบเป็นข้อความให้ตรงกับที่คำนวณได้';
+    choicesWrap.appendChild(hint);
+  }else{
+    item.choices.forEach(function(choiceText,idx){
+      var b=document.createElement('button');
+      b.type='button';
+      b.className='choice'+(state.answers[current]===idx?' selected':'');
+      b.innerHTML='<span class="letter">'+letters[idx]+'</span> '+choiceText;
+      b.addEventListener('click',function(){
+        state.answers[current]=idx;
+        saveState();
+        renderQuestion();
+      });
+      choicesWrap.appendChild(b);
+    });
+  }
+
+  prevBtn.disabled=(current===0);
+  if(current===TOTAL-1){
+    nextBtn.style.display='none';
+    submitBtn.style.display='inline-flex';
+  }else{
+    nextBtn.style.display='inline-flex';
+    submitBtn.style.display='none';
+  }
+  updateJumpgrid();
+}
+
+prevBtn.addEventListener('click',function(){ if(current>0){current--;renderQuestion();} });
+nextBtn.addEventListener('click',function(){ if(current<TOTAL-1){current++;renderQuestion();} });
+
+/* ---------- TIMER ---------- */
+var timerBadge=document.getElementById('timerBadge');
+function ensureQuizDeadline(){
+  if(state.submitted) return;
+  if(!adminData.timerMinutes || adminData.timerMinutes<=0){
+    if(state.deadline!==null){
+      state.deadline=null;
+      saveState();
+    }
+    return;
+  }
+  if(!state.deadline || state.deadline<=Date.now()){
+    state.deadline=Date.now()+adminData.timerMinutes*60000;
+    saveState();
+  }
+}
+function updateTimerDisplay(){
+  var quizPageActive=document.getElementById('page-quiz').classList.contains('active');
+  if(!quizPageActive || state.submitted || !state.deadline){
+    timerBadge.style.display='none';
+    return;
+  }
+  timerBadge.style.display='inline-block';
+  var remainMs=state.deadline-Date.now();
+  if(remainMs<=0){
+    timerBadge.textContent='⏱ 00:00';
+    if(!submitLocked){
+      toast('หมดเวลาทำข้อสอบ ระบบส่งคำตอบให้อัตโนมัติ');
+      doSubmitFlow();
+    }
+    return;
+  }
+  var totalSec=Math.ceil(remainMs/1000);
+  var mm=Math.floor(totalSec/60);
+  var ss=totalSec%60;
+  timerBadge.textContent='⏱ '+String(mm).padStart(2,'0')+':'+String(ss).padStart(2,'0');
+  timerBadge.classList.toggle('low', totalSec<=60);
+}
+setInterval(updateTimerDisplay,1000);
+
+/* ---------- SUBMIT FLOW ---------- */
+var confirmModal=document.getElementById('confirmModal');
+var confirmModalText=document.getElementById('confirmModalText');
+var confirmOk=document.getElementById('confirmOk');
+var confirmCancel=document.getElementById('confirmCancel');
+var submitLocked=false;
+var confirmMode='submit';
+
+submitBtn.addEventListener('click',function(){
+  confirmMode='submit';
+  var answeredCount=Object.keys(state.answers).length;
+  if(answeredCount<TOTAL){
+    confirmModalText.textContent='คุณตอบไปแล้ว '+answeredCount+' จาก '+TOTAL+' ข้อ ยังไม่ครบทุกข้อ ต้องการส่งคำตอบเลยหรือไม่?';
+  }else{
+    confirmModalText.textContent='คุณต้องการส่งคำตอบหรือไม่?';
+  }
+  confirmModal.classList.add('show');
+});
+confirmCancel.addEventListener('click',function(){ confirmModal.classList.remove('show'); });
+confirmModal.addEventListener('click',function(e){ if(e.target===confirmModal) confirmModal.classList.remove('show'); });
+
+function doSubmitFlow(){
+  if(submitLocked) return;
+  submitLocked=true;
+  confirmModal.classList.remove('show');
+  gradeQuiz();
+  goPage('results');
+  setTimeout(function(){ submitLocked=false; },800);
+}
+
+confirmOk.addEventListener('click',function(){
+  if(submitLocked) return;
+  submitLocked=true;
+  confirmModal.classList.remove('show');
+  confirmOk.disabled=true;
+
+  if(confirmMode==='submit'){
+    gradeQuiz();
+    goPage('results');
+  }else if(confirmMode==='clear'){
+    state={name:'',studentClass:'',studentNo:'',answers:{},submitted:false,score:null,breakdown:null,deadline:null,totalAtSubmission:null,history:state.history||[]};
+    saveState();
+    studentNameInput.value='';
+    studentClassInput.value='';
+    studentNoInput.value='';
+    current=0;
+    var ansContent=document.getElementById('answersContent');
+    if(ansContent) ansContent.dataset.rendered='0';
+    toast('ล้างข้อมูลนักเรียนเรียบร้อยแล้ว');
+    renderQuestion();
+    goPage('cover');
+  }
+
+  setTimeout(function(){ confirmOk.disabled=false; submitLocked=false; },800);
+});
+
+function isAnswerCorrect(item,userAns){
+  if(item.type==='written'){
+    if(userAns===undefined || userAns===null || String(userAns).trim()==='') return false;
+    if(item.numeric){
+      var a=parseFloat(String(userAns).replace(/,/g,''));
+      var b=parseFloat(item.answer);
+      var tol=(item.tolerance!==undefined && item.tolerance!==null && item.tolerance!=='')?parseFloat(item.tolerance):0.05;
+      if(isNaN(a)||isNaN(b)) return false;
+      return Math.abs(a-b)<=tol;
+    }
+    return String(userAns).trim().toLowerCase()===String(item.answer).trim().toLowerCase();
+  }
+  return userAns===item.correct;
+}
+function levelKeyOf(item){ return item.levelLabel ? item.levelLabel : ('lv'+item.level); }
+
+function gradeQuiz(){
+  var score=0;
+  var breakdown={};
+  Q.forEach(function(item,idx){
+    var key=levelKeyOf(item);
+    var label=item.levelLabel || levelNames[item.level] || 'อื่น ๆ';
+    if(!breakdown[key]) breakdown[key]={correct:0,total:0,label:label};
+    breakdown[key].total++;
+    if(isAnswerCorrect(item,state.answers[idx])){
+      score++;
+      breakdown[key].correct++;
+    }
+  });
+  state.score=score;
+  state.submitted=true;
+  state.breakdown=breakdown;
+  state.deadline=null;
+  state.totalAtSubmission=TOTAL;
+  
+  // บันทึกประวัติส่งแอดมิน
+  if(!Array.isArray(state.history)) state.history=[];
+  state.history.unshift({
+    at:Date.now(),
+    name:state.name||'ไม่ระบุชื่อ',
+    studentClass:state.studentClass||'-',
+    studentNo:state.studentNo||'-',
+    score:score,
+    total:TOTAL,
+    percent:Math.round((score/TOTAL)*100)
+  });
+  if(state.history.length>50) state.history=state.history.slice(0,50);
+  saveState();
+}
+
+/* ---------- RESULTS ---------- */
+function gradeLabel(pct){
+  if(pct>=90) return {text:'ยอดเยี่ยม',cls:'grade-a'};
+  if(pct>=75) return {text:'ดีมาก',cls:'grade-b'};
+  if(pct>=60) return {text:'ผ่านเกณฑ์',cls:'grade-c'};
+  return {text:'ควรทบทวนพื้นฐานเพิ่มเติม',cls:'grade-d'};
+}
+function renderResultsIfAvailable(){
+  var empty=document.getElementById('resultsEmpty');
+  var content=document.getElementById('resultsContent');
+  if(!state.submitted){
+    empty.style.display='block';
+    content.style.display='none';
+    return;
+  }
+  empty.style.display='none';
+  content.style.display='block';
+  
+  var nameText = state.name ? ('ผู้ทำ: ' + state.name) : 'ผู้ทำ: ไม่ระบุชื่อ';
+  if(state.studentClass) nameText += ' | ชั้น: ' + state.studentClass;
+  if(state.studentNo) nameText += ' | เลขที่: ' + state.studentNo;
+
+  document.getElementById('resultName').textContent=nameText;
+  document.getElementById('resultScore').textContent=state.score;
+  var resultTotal=state.totalAtSubmission||TOTAL;
+  var pct=Math.round((state.score/resultTotal)*100);
+  document.getElementById('resultRing').style.setProperty('--pct',pct);
+  var g=gradeLabel(pct);
+  var gradeEl=document.getElementById('resultGrade');
+  gradeEl.textContent=g.text+' ('+state.score+'/'+resultTotal+' — '+pct+'%)';
+  gradeEl.className='result-grade '+g.cls;
+  document.getElementById('resultOutOf').textContent='/ '+resultTotal;
+
+  var bd=state.breakdown||{};
+  var rb=document.getElementById('resultBreakdown');
+  rb.innerHTML='';
+  Object.keys(bd).forEach(function(key){
+    var d=bd[key];
+    var card=document.createElement('div');
+    card.className='rb-card';
+    card.innerHTML='<div class="rb-num">'+d.correct+'/'+d.total+'</div><div class="rb-label">'+d.label+'</div>';
+    rb.appendChild(card);
+  });
+}
+document.getElementById('viewAnswersBtn').addEventListener('click',function(){ goPage('answers'); });
+document.getElementById('restartBtn').addEventListener('click',function(){
+  state.answers={};
+  state.submitted=false;
+  state.score=null;
+  state.breakdown=null;
+  state.deadline=null;
+  state.totalAtSubmission=null;
+  saveState();
+  current=0;
+  var ansContent=document.getElementById('answersContent');
+  if(ansContent) ansContent.dataset.rendered='0';
+  toast('เริ่มทำแบบทดสอบใหม่แล้ว');
+  goPage('quiz');
+});
+
+/* ---------- ANSWERS ---------- */
+function renderAnswersIfUnlocked(){
+  var locked=document.getElementById('answersLocked');
+  var content=document.getElementById('answersContent');
+  if(!state.submitted){
+    locked.style.display='block';
+    content.style.display='none';
+    return;
+  }
+  locked.style.display='none';
+  content.style.display='block';
+  if(content.dataset.rendered==='1') return;
+  content.dataset.rendered='1';
+
+  var letters=['ก','ข','ค','ง'];
+  var html='';
+  Q.forEach(function(item,idx){
+    var userAns=state.answers[idx];
+    var isCorrect=isAnswerCorrect(item,userAns);
+    var noAnswer=(userAns===undefined || userAns===null || String(userAns).trim()==='');
+    html+='<div class="answer-card">';
+    html+='<div class="ac-head"><h4>ข้อที่ '+(idx+1)+'</h4>';
+    html+='<span class="ac-status '+(isCorrect?'correct':'wrong')+'">'+(isCorrect?'ตอบถูก':(noAnswer?'ไม่ได้ตอบ':'ตอบผิด'))+'</span></div>';
+    html+='<div class="ac-body">';
+    html+='<p><span class="ac-label">โจทย์:</span> '+item.q+'</p>';
+    if(item.tri){ html+=triangleSVG(item.tri[0]||'',item.tri[1]||'',item.tri[2]||''); }
+    if(item.type==='written'){
+      html+='<p><span class="ac-label">คำตอบที่ถูกต้อง:</span> '+item.answer+'</p>';
+      if(!noAnswer && !isCorrect){
+        html+='<p><span class="ac-label">คำตอบที่คุณพิมพ์:</span> '+userAns+'</p>';
+      }
+    }else{
+      html+='<p><span class="ac-label">คำตอบที่ถูกต้อง:</span> '+letters[item.correct]+'. '+item.choices[item.correct]+'</p>';
+      if(!noAnswer && userAns!==item.correct){
+        html+='<p><span class="ac-label">คำตอบที่คุณเลือก:</span> '+letters[userAns]+'. '+item.choices[userAns]+'</p>';
+      }
+    }
+    html+='<p><span class="ac-label">วิธีทำ:</span></p><ul>';
+    item.steps.forEach(function(s){ html+='<li>'+s+'</li>'; });
+    html+='</ul>';
+    html+='<p><span class="ac-label">เหตุผล:</span> '+item.why+'</p>';
+    html+='</div></div>';
+  });
+  content.innerHTML=html;
+}
+
+/* ---------- SUMMARY ---------- */
+var summaryHTML='<section class="block alt"><div class="wrap" style="text-align:center;">'+
+  '<h2 class="sectiontitle" style="text-align:center;">สรุปตรีโกณมิติ ม.3 ใน 1 หน้า</h2>'+
+  '<div class="summary-box">'+
+  '<h3>สูตรหลัก</h3>'+
+  '<div class="eqline">sin θ = ด้านตรงข้าม / ด้านตรงข้ามมุมฉาก</div>'+
+  '<div class="eqline">cos θ = ด้านประชิด / ด้านตรงข้ามมุมฉาก</div>'+
+  '<div class="eqline">tan θ = ด้านตรงข้าม / ด้านประชิด</div>'+
+  '<h3 style="margin-top:20px;">พีทาโกรัส</h3>'+
+  '<div class="eqline">a² + b² = c²</div>'+
+  '<h3 style="margin-top:20px;">การหามุม</h3>'+
+  '<div class="eqline">θ = sin⁻¹( ข้าม / ฉาก )</div>'+
+  '<div class="eqline">θ = cos⁻¹( ชิด / ฉาก )</div>'+
+  '<div class="eqline">θ = tan⁻¹( ข้าม / ชิด )</div>'+
+  '<h3 style="margin-top:20px;">ตารางสรุปการเลือกสูตร</h3>'+
+  '<table class="ratio-table"><thead><tr><th>สิ่งที่รู้</th><th>สูตรที่ใช้</th></tr></thead><tbody>'+
+  '<tr><td>ข้าม + ฉาก</td><td>sin</td></tr>'+
+  '<tr><td>ชิด + ฉาก</td><td>cos</td></tr>'+
+  '<tr><td>ข้าม + ชิด</td><td>tan</td></tr>'+
+  '</tbody></table>'+
+  '</div></div></section>';
+document.getElementById('page-lesson').insertAdjacentHTML('beforeend',summaryHTML);
+
+/* ---------- RESET / CLEAR ---------- */
+var clearBtnHTML='<div style="text-align:center;margin-top:18px;"><button class="btn btn-danger" id="clearDataBtn">ล้างข้อมูลผู้ใช้ปัจจุบัน</button></div>';
+document.getElementById('page-cover').querySelector('.wrap').insertAdjacentHTML('beforeend',clearBtnHTML);
+document.getElementById('clearDataBtn').addEventListener('click',function(){
+  if(!verifyAdminPassword('ล้างข้อมูลผู้ใช้')) return;
+  confirmMode='clear';
+  confirmModalText.textContent='ต้องการล้างข้อมูลชื่อ ชั้น เลขที่ และคำตอบปัจจุบันหรือไม่?';
+  confirmModal.classList.add('show');
+});
+
+/* ---------- ADMIN PANEL ---------- */
+var adminLoginBox=document.getElementById('adminLoginBox');
+var adminPanel=document.getElementById('adminPanel');
+var adminPassInput=document.getElementById('adminPassInput');
+var adminLoginError=document.getElementById('adminLoginError');
+
+document.getElementById('adminLoginBtn').addEventListener('click',function(){
+  var val=adminPassInput.value;
+  if(hashStr(val)===adminData.passHash){
+    isAdmin=true;
+    try{ sessionStorage.setItem(ADMIN_SESSION_KEY,'1'); }catch(e){}
+    adminPassInput.value='';
+    adminLoginError.textContent='';
+    renderAdminPanel();
+  }else{
+    adminLoginError.textContent='รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่';
+  }
+});
+adminPassInput.addEventListener('keydown',function(e){ if(e.key==='Enter') document.getElementById('adminLoginBtn').click(); });
+document.getElementById('adminLogoutBtn').addEventListener('click',function(){
+  isAdmin=false;
+  try{ sessionStorage.removeItem(ADMIN_SESSION_KEY); }catch(e){}
+  renderAdminPanel();
+  toast('ออกจากระบบแอดมินแล้ว');
+});
+document.getElementById('clearSavedDataBtn').addEventListener('click',function(){
+  if(!verifyAdminPassword('ลบข้อมูลผลสอบทั้งหมด')) return;
+  if(!confirm('ลบข้อมูลผลสอบที่บันทึกไว้ทั้งหมดหรือไม่?')) return;
+  state.history=[];
+  saveState();
+  renderAdminPanel();
+  toast('ลบประวัติผลสอบทั้งหมดแล้ว');
+});
+
+function verifyAdminPassword(actionLabel){
+  var entered=prompt('ยืนยันรหัสผ่านแอดมินเพื่อ'+actionLabel);
+  if(entered===null) return false;
+  if(hashStr(entered)!==adminData.passHash){
+    toast('รหัสผ่านแอดมินไม่ถูกต้อง');
+    return false;
+  }
+  return true;
+}
+
+function renderHistoryList(){
+  var wrap=document.getElementById('historyList');
+  if(!wrap) return;
+  var history=Array.isArray(state.history)?state.history:[];
+  wrap.innerHTML='';
+  if(!history.length){
+    wrap.innerHTML='<div class="history-empty">ยังไม่มีประวัติผลสอบที่บันทึกไว้</div>';
+    return;
+  }
+  history.forEach(function(item,idx){
+    var row=document.createElement('div');
+    row.className='history-row';
+    var d=new Date(item.at||Date.now());
+    var when=d.toLocaleString('th-TH');
+    var escape = function(str){ return String(str||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+    
+    row.innerHTML='<div class="history-main">'+(idx+1)+'. '+escape(item.name)+
+      ' (ชั้น '+escape(item.studentClass)+' เลขที่ '+escape(item.studentNo)+') — '+item.score+'/'+item.total+' ('+item.percent+'%)</div>'+
+      '<div class="history-meta">วันที่ทำสอบ: '+when+'</div>';
+    wrap.appendChild(row);
+  });
+}
+
+function renderAdminPanel(){
+  if(!isAdmin){
+    adminLoginBox.style.display='block';
+    adminPanel.style.display='none';
+    return;
+  }
+  adminLoginBox.style.display='none';
+  adminPanel.style.display='block';
+  document.getElementById('setQuizCount').value=adminData.quizCount||getPool().length;
+  document.getElementById('setTimerMinutes').value=adminData.timerMinutes||0;
+  document.getElementById('poolCountLabel').textContent=getPool().length;
+  renderQbankList();
+  renderHistoryList();
+}
+
+document.getElementById('saveExamSettingsBtn').addEventListener('click',function(){
+  var cnt=parseInt(document.getElementById('setQuizCount').value,10);
+  var mins=parseInt(document.getElementById('setTimerMinutes').value,10);
+  if(isNaN(cnt)||cnt<1) cnt=getPool().length;
+  if(isNaN(mins)||mins<0) mins=0;
+  adminData.quizCount=Math.min(cnt,getPool().length);
+  var oldTimer=adminData.timerMinutes;
+  adminData.timerMinutes=mins;
+  if(oldTimer!==mins && !state.submitted){
+    state.deadline=null;
+    saveState();
+  }
+  saveAdminData();
+  toast('บันทึกการตั้งค่าการสอบแล้ว');
+  renderAdminPanel();
+});
+
+document.getElementById('changePassBtn').addEventListener('click',function(){
+  var p1=document.getElementById('newPass1').value;
+  var p2=document.getElementById('newPass2').value;
+  var errEl=document.getElementById('changePassError');
+  if(!p1 || p1.length<4){ errEl.textContent='รหัสผ่านใหม่ต้องมีอย่างน้อย 4 ตัวอักษร'; return; }
+  if(p1!==p2){ errEl.textContent='รหัสผ่านใหม่ทั้งสองช่องไม่ตรงกัน'; return; }
+  adminData.passHash=hashStr(p1);
+  saveAdminData();
+  document.getElementById('newPass1').value='';
+  document.getElementById('newPass2').value='';
+  errEl.textContent='';
+  toast('เปลี่ยนรหัสผ่านแอดมินเรียบร้อยแล้ว');
+});
+
+document.getElementById('resetDefaultBtn').addEventListener('click',function(){
+  if(!verifyAdminPassword('กู้คืนชุดข้อสอบเริ่มต้น')) return;
+  adminData.questions=null;
+  adminData.quizCount=DEFAULT_Q.length;
+  saveAdminData();
+  toast('กู้คืนชุดข้อสอบเริ่มต้น 30 ข้อแล้ว');
+  renderAdminPanel();
+});
+
+function renderQbankList(){
+  var pool=getPool();
+  var wrap=document.getElementById('qbankList');
+  wrap.innerHTML='';
+  if(pool.length===0){
+    wrap.innerHTML='<p style="color:var(--ink-soft);">ยังไม่มีโจทย์ในคลัง</p>';
+    return;
+  }
+  pool.forEach(function(item,idx){
+    var row=document.createElement('div');
+    row.className='qbank-row';
+    var typeLabel=item.type==='written'?'อัตนัย':'ปรนัย';
+    var levelLabel=item.levelLabel||levelNames[item.level]||'อื่น ๆ';
+    row.innerHTML='<div class="qb-info"><div class="qb-q">'+(idx+1)+'. '+item.q+'</div>'+
+      '<div class="qb-meta">'+typeLabel+' • '+levelLabel+'</div></div>'+
+      '<div class="qb-actions"><button class="btn btn-outline" data-act="edit" data-idx="'+idx+'">แก้ไข</button>'+
+      '<button class="btn btn-danger" data-act="del" data-idx="'+idx+'">ลบ</button></div>';
+    wrap.appendChild(row);
+  });
+  wrap.querySelectorAll('button[data-act="edit"]').forEach(function(b){
+    b.addEventListener('click',function(){ openQuestionForm(parseInt(b.getAttribute('data-idx'),10)); });
+  });
+  wrap.querySelectorAll('button[data-act="del"]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var idx=parseInt(b.getAttribute('data-idx'),10);
+      if(!confirm('ต้องการลบโจทย์ข้อนี้หรือไม่?')) return;
+      if(!verifyAdminPassword('ลบโจทย์ข้อนี้')) return;
+      ensureCustomPool();
+      adminData.questions.splice(idx,1);
+      if(adminData.quizCount>adminData.questions.length) adminData.quizCount=adminData.questions.length||1;
+      saveAdminData();
+      toast('ลบโจทย์แล้ว');
+      renderAdminPanel();
+    });
+  });
+}
+
+function ensureCustomPool(){
+  if(!adminData.questions){
+    adminData.questions=JSON.parse(JSON.stringify(DEFAULT_Q));
+  }
+}
+
+/* ---- question form ---- */
+var questionFormCard=document.getElementById('questionFormCard');
+var qfType=document.getElementById('qfType');
+var qfLevel=document.getElementById('qfLevel');
+var qfLevelCustomWrap=document.getElementById('qfLevelCustomWrap');
+var qfNumeric=document.getElementById('qfNumeric');
+var qfToleranceWrap=document.getElementById('qfToleranceWrap');
+var editingIndex=null;
+
+function toggleFormSections(){
+  var isWritten=qfType.value==='written';
+  document.getElementById('qfMcSection').style.display=isWritten?'none':'block';
+  document.getElementById('qfWrittenSection').style.display=isWritten?'block':'none';
+  qfLevelCustomWrap.style.display=(qfLevel.value==='custom')?'flex':'none';
+  qfToleranceWrap.style.display=(qfNumeric.value==='1')?'flex':'none';
+}
+qfType.addEventListener('change',toggleFormSections);
+qfLevel.addEventListener('change',toggleFormSections);
+qfNumeric.addEventListener('change',toggleFormSections);
+
+document.getElementById('addQuestionBtn').addEventListener('click',function(){ openQuestionForm(null); });
+document.getElementById('cancelQuestionBtn').addEventListener('click',function(){
+  questionFormCard.style.display='none';
+});
+
+function openQuestionForm(idx){
+  editingIndex=idx;
+  document.getElementById('questionFormError').textContent='';
+  var pool=getPool();
+  var item=(idx!==null)?pool[idx]:null;
+  document.getElementById('questionFormTitle').textContent=(idx!==null)?'แก้ไขโจทย์ข้อที่ '+(idx+1):'เพิ่มโจทย์ใหม่';
+
+  qfType.value=item&&item.type==='written'?'written':'mc';
+  if(item && item.levelLabel){
+    qfLevel.value='custom';
+  }else{
+    qfLevel.value=item?String(item.level||1):'1';
+  }
+  document.getElementById('qfLevelCustom').value=item&&item.levelLabel?item.levelLabel:'';
+  document.getElementById('qfQuestion').value=item?item.q:'';
+  document.getElementById('qfTriOpp').value=item&&item.tri?item.tri[0]||'':'';
+  document.getElementById('qfTriAdj').value=item&&item.tri?item.tri[1]||'':'';
+  document.getElementById('qfTriHyp').value=item&&item.tri?item.tri[2]||'':'';
+
+  for(var i=0;i<4;i++){
+    document.getElementById('qfChoice'+i).value=(item&&item.choices)?(item.choices[i]||''):'';
+  }
+  var radios=document.getElementsByName('qfCorrect');
+  var isMcItem=item && (!item.type || item.type==='mc');
+  for(var ri=0;ri<radios.length;ri++){
+    radios[ri].checked=isMcItem && item.correct===parseInt(radios[ri].value,10);
+  }
+  if(!isMcItem){ radios[0].checked=true; }
+
+  document.getElementById('qfAnswer').value=item&&item.answer!==undefined?item.answer:'';
+  qfNumeric.value=item&&item.numeric?'1':'0';
+  document.getElementById('qfTolerance').value=item&&item.tolerance!==undefined?item.tolerance:'';
+
+  document.getElementById('qfSteps').value=item&&item.steps?item.steps.join('\n'):'';
+  document.getElementById('qfWhy').value=item&&item.why?item.why:'';
+
+  toggleFormSections();
+  questionFormCard.style.display='block';
+  questionFormCard.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.getElementById('saveQuestionBtn').addEventListener('click',function(){
+  var errEl=document.getElementById('questionFormError');
+  var qText=document.getElementById('qfQuestion').value.trim();
+  if(!qText){ errEl.textContent='กรุณาพิมพ์โจทย์คำถาม'; return; }
+  var stepsRaw=document.getElementById('qfSteps').value.split('\n').map(function(s){return s.trim();}).filter(function(s){return s;});
+  if(stepsRaw.length===0){ errEl.textContent='กรุณาใส่วิธีทำอย่างน้อย 1 ขั้นตอน'; return; }
+  var whyText=document.getElementById('qfWhy').value.trim()||'—';
+
+  var newItem={ q:qText, steps:stepsRaw, why:whyText };
+
+  if(qfLevel.value==='custom'){
+    var customLabel=document.getElementById('qfLevelCustom').value.trim();
+    if(!customLabel){ errEl.textContent='กรุณาใส่ชื่อหมวดหมู่ที่กำหนดเอง'; return; }
+    newItem.levelLabel=customLabel;
+    newItem.level=0;
+  }else{
+    newItem.level=parseInt(qfLevel.value,10);
+  }
+
+  var oppL=document.getElementById('qfTriOpp').value.trim();
+  var adjL=document.getElementById('qfTriAdj').value.trim();
+  var hypL=document.getElementById('qfTriHyp').value.trim();
+  if(oppL||adjL||hypL){ newItem.tri=[oppL,adjL,hypL]; }
+
+  if(qfType.value==='written'){
+    newItem.type='written';
+    var ans=document.getElementById('qfAnswer').value.trim();
+    if(!ans){ errEl.textContent='กรุณาใส่คำตอบที่ถูกต้อง'; return; }
+    newItem.answer=ans;
+    newItem.numeric=(qfNumeric.value==='1');
+    if(newItem.numeric){
+      var tol=document.getElementById('qfTolerance').value.trim();
+      newItem.tolerance=tol?parseFloat(tol):0.05;
+      if(isNaN(parseFloat(ans))){ errEl.textContent='คำตอบต้องเป็นตัวเลขเมื่อเลือก "เป็นคำตอบตัวเลข"'; return; }
+    }
+  }else{
+    newItem.type='mc';
+    var choices=[];
+    for(var i=0;i<4;i++){
+      var cv=document.getElementById('qfChoice'+i).value.trim();
+      if(!cv){ errEl.textContent='กรุณากรอกตัวเลือกให้ครบทั้ง 4 ข้อ'; return; }
+      choices.push(cv);
+    }
+    var uniq=choices.filter(function(v,i,arr){return arr.indexOf(v)===i;});
+    if(uniq.length<4){ errEl.textContent='ตัวเลือกทั้ง 4 ข้อต้องไม่ซ้ำกัน'; return; }
+    var checkedRadio=document.querySelector('input[name="qfCorrect"]:checked');
+    if(!checkedRadio){ errEl.textContent='กรุณาเลือกตัวเลือกที่ถูกต้อง'; return; }
+    newItem.choices=choices;
+    newItem.correct=parseInt(checkedRadio.value,10);
+  }
+
+  ensureCustomPool();
+  if(editingIndex!==null){
+    adminData.questions[editingIndex]=newItem;
+    toast('บันทึกการแก้ไขโจทย์แล้ว');
+  }else{
+    adminData.questions.push(newItem);
+    if(adminData.quizCount<adminData.questions.length && adminData.quizCount===DEFAULT_Q.length){
+      adminData.quizCount=adminData.questions.length;
+    }
+    toast('เพิ่มโจทย์ใหม่แล้ว');
+  }
+  saveAdminData();
+  questionFormCard.style.display='none';
+  renderAdminPanel();
+});
+
+/* ---------- INIT ---------- */
+buildJumpgrid();
+renderQuestion();
+
+})();
+</script>
+</body>
+</html>
